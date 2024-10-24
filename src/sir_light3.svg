@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 27.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 595.28 841.89" style="enable-background:new 0 0 595.28 841.89;" xml:space="preserve">
+<rect width="100%" height="100%" class="light"/>
+<style type="text/css">
+	:root{
+	--nave-bg-color: #cbcbff;
+	--border-color: #a5a5ff;
+	--bage-bg-color: #f4f4ff;
+	--boxes-bg-color: #ffffff;
+	--text-dark: #0a0e43;
+	--text-light: #ffffff;
+	--text-black: black;
+	--main-link-color: blue;
+	}
+	.dark{fill:var(--text-dark);}
+	.light{fill:var(--nave-bg-color);}
+</style>
+<g id="Layer_1">
+	<path class="dark" d="M104.73,568.46C-9.19,444.2-0.79,251.11,123.47,137.2s317.35-105.52,431.26,18.74"/>
+</g>
+<g id="Layer_3">
+	<path class="light" d="M205,479.3c-64.26-70.1-59.53-179.02,10.57-243.28s179.02-59.53,243.28,10.57"/>
+</g>
+<g id="Layer_4">
+	<path class="dark" d="M491.39,268.36c113.4,124.73,104.21,317.78-20.52,431.18S153.09,803.75,39.69,679.02"/>
+</g>
+
+<g id="Layer_4">
+	<path class="light" d="M390.76,357.1c63.97,70.36,58.79,179.27-11.58,243.24s-179.27,58.79-243.24-11.58"/>
+</g>
+
+<g id="Layer_6">
+	<circle class="dark" cx="299.31" cy="417.78" r="68.72"/>
+</g>
+</svg>
