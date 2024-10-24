@@ -8,12 +8,16 @@ import { SidebarContext } from './SidebarContext';
 const Register = () => {
 
     // handel variables
-    const [name, setName] = useState('');
+    const [firstname, setFirstName] = useState('');
+    const [lastname, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [verfiedPassword, setVerfiedPassword] = useState('');
-    const [registerApi] = useState('');
-    const [checkTokenApi] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [gender , setGender] = useState('');
+    const [dateOfBirth, setDateOfBirth] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [registerApi] = useState('http://localhost:4000/api/auth/register');
+    const [checkTokenApi] = useState('http://localhost:4000/api/auth');
     const [isLoggedIn, setIsLoggedIn]= useContext(LoginContext);
     const [isSidebarActive, setIsSidebarActive] = useContext(SidebarContext);
     const navigate = useNavigate();
@@ -26,7 +30,7 @@ const Register = () => {
             if (isLoggedIn) {
                 const token = localStorage.getItem('token');
                 try {
-                    const response = await fetch({checkTokenApi}, {
+                    const response = await fetch(checkTokenApi, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -36,7 +40,7 @@ const Register = () => {
                     });
 
                     if (response.ok) {
-                        navigate('/dashboard'); //الراوت اللي هو فيه من قبل كدا
+                        navigate('/profile'); //الراوت اللي هو فيه من قبل كدا
                     } else {
                         setIsLoggedIn(false);
                         localStorage.removeItem('token');
@@ -57,20 +61,22 @@ const Register = () => {
     // handel athontication
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch({registerApi}, {
+        const response = await fetch('http://localhost:4000/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, verfiedPassword }),
+        body: JSON.stringify({ firstname, lastname, email, password, confirmPassword, gender, dateOfBirth, phoneNumber }),
         });
-
+        console.log(response);
         if (response.ok) {
         const data = await response.json();
         localStorage.setItem('token', data.token); 
         setIsLoggedIn(true);
         setIsSidebarActive(false);
-        navigate('/dashboard');
+        navigate('/profile');
         } else {
-        alert('Invalid credentials');
+            const errorData = await response.json();
+            console.error('Error:', errorData);
+            alert('Invalid credentials');
         }
     };
 
@@ -80,14 +86,24 @@ const Register = () => {
         <section className='bage'>
             <form method="post" onSubmit={handleSubmit}>
                 <h2>Register</h2>
-                <label htmlFor="name">Enter your name:</label>
-                <input type="text" name="name" placeholder="enter your name" onChange={(e) => setName(e.target.value)} required/>
+                <label htmlFor="firstname">Enter your firstname:</label>
+                <input type="text" name="firstname" placeholder="enter your firstname" onChange={(e) => setFirstName(e.target.value)} required/>
+                <label htmlFor="lastname">Enter your lastname:</label>
+                <input type="text" name="lastname" placeholder="enter your lastname" onChange={(e) => setLastName(e.target.value)} required/>
                 <label htmlFor="email">Enter your email:</label>
                 <input type="email" name="email" placeholder="enter your email" onChange={(e) => setEmail(e.target.value)} required/>
                 <label htmlFor="password">Enter your password:</label>
                 <input type="password" name="password" placeholder="enter your password" onChange={(e) => setPassword(e.target.value)} required/>
-                <label htmlFor="verfied-password">Verify the password:</label>
-                <input type="password" name="verfied-password" placeholder="verify the password" onChange={(e) => setVerfiedPassword(e.target.value)} required/>
+                <label htmlFor="confirmPassword">Verify the password:</label>
+                <input type="password" name="confirmPassword" placeholder="verify the password" onChange={(e) => setConfirmPassword(e.target.value)} required/>
+                
+                <label htmlFor="gender">gender:</label>
+                <input type="text" name="gender" placeholder="gender" onChange={(e) => setGender(e.target.value)} required/>
+                <label htmlFor="dateOfBirth">dateOfBirth:</label>
+                <input type="date" name="dateOfBirth" placeholder="dateOfBirth" onChange={(e) => setDateOfBirth(e.target.value)} required/>
+                <label htmlFor="phoneNumber">phoneNumber:</label>
+                <input type="number" name="phoneNumber" placeholder="phoneNumber" onChange={(e) => setPhoneNumber(e.target.value)} required/>
+
                 <input type="submit" value="Register"/>
                 <div>
                     <p>already have an account? </p>
