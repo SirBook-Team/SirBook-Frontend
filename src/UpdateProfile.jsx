@@ -58,11 +58,11 @@ const UpdateProfile = () => {
     e.preventDefault();
     const formData = new FormData();
     console.log(firstname, lastname, email, dateOfBirth, phoneNumber, profile);
-    // formData.append('firstname', firstname);
-    // formData.append('lastname', lastname);
-    // formData.append('email', email);
-    // formData.append('dateOfBirth', dateOfBirth);
-    // formData.append('phoneNumber', phoneNumber);
+    formData.append('firstname', firstname);
+    formData.append('lastname', lastname);
+    formData.append('email', email);
+    formData.append('dateOfBirth', dateOfBirth);
+    formData.append('phoneNumber', phoneNumber);
     if (profile) formData.append('profile', profile);
     const token = localStorage.getItem('token');
     console.log(token);
@@ -101,7 +101,7 @@ const UpdateProfile = () => {
                 <input type="text" name="firstname" placeholder="update your firstname" value={firstname} onChange={(e) => setFirstName(e.target.value)} required/>
                 <label htmlFor="lastname">update  your lastname:</label>
                 <input type="text" name="lastname" placeholder="update your lastname" value={lastname} onChange={(e) => setLastName(e.target.value)} required/>
-                <label htmlFor="email">your name:</label>
+                <label htmlFor="email">your email:</label>
                 <input type="email" name="email" placeholder="your email" value={email} required readOnly/>
                 {/* <label htmlFor="previous-password">previous password:</label> */}
                 {/* <input type="password" name="previous-password" placeholder="enter your old password" required/> */}

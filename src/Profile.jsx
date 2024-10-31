@@ -58,17 +58,24 @@ const Profile = () => {
                 <div className="main-box">
                     <img alt={ user ? `${user.firstname} ${user.lastname}'s profile` : 'profile'} src={ user && user.profile ? user.profile : profileImg}/>
                 </div>
-                <div className='posts-box'>
                 </div>
-            </div>
-            <h2>{user ? `${user.firstname} ${user.lastname}` : 'user\'s name'}</h2>
-                <input type="email" name="email" required readOnly/>
-                {/* <input type="password" name="password" value={us} required readOnly/> */}
+                <h2>{user ? `${user.firstname} ${user.lastname}` : 'user\'s name'}</h2>
+                <label htmlFor="firstname">firstname:</label>
+                <input type="text" name="firstname" value={user ? `${user.firstname}` : ''} required readOnly/>
+                <label htmlFor="lastname">lastname:</label>
+                <input type="text" name="lastname" value={user ? `${user.lastname}` : ''} required readOnly/>
+                <label htmlFor="email">email:</label>
+                <input type="email" name="email" value={user ? `${user.email}` : ''} required readOnly/>
+                <label htmlFor="dateOfBirth">birth date:</label>
+                <input type="date" name="dateOfBirth" value={user ? `${user.dateOfBirth}` : ''} required readOnly/>
+                <label htmlFor="phoneNumber">phone number:</label>
+                <input type="number" name="phoneNumber" value={user ? `${user.phoneNumber}` : ''} required readOnly/>
                 <div>
-                    <Link to="/register">update profile</Link>
+                    <Link to="/profile/update">update profile</Link>
                 </div>
             </form>
-            
+            <div className='posts-box'>
+            </div>
         </section>
     </>
   )
