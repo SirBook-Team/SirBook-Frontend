@@ -22,6 +22,9 @@ h2{
 
 img{
   height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 a{
@@ -97,7 +100,7 @@ a{
 }
 
 .logo{
-  width: 55px;
+  width: 50px;
   height: 55px;
   /* border-bottom: 1px solid var(--border-color); */
   /* border: 1px solid; */
@@ -298,6 +301,32 @@ aside nav button span{
   color: var(--text-dark);
 }
 
+.bage-body form .flex-field{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 10px 0;
+}
+
+.bage-body form .flex-field .view-label{
+  width: 45%;
+  margin: 0;
+  text-align: center;
+}
+
+.bage-body form .flex-field input{
+  width: 100%;
+  margin: 0;
+}
+
+.bage-body form .view-label{
+  font-size: 16px;
+  color: var(--text-dark);
+}
+
 .bage-body form input{
   width: 100%;
   padding: 15px;
@@ -308,6 +337,26 @@ aside nav button span{
   font-size: 16px;
   background-color: var(--bage-bg-color);
   color: var(--text-black);
+}
+
+.bage-body form div .update-btn{
+  width: 100%;
+  text-decoration: none;
+  padding: 15px;
+  margin: 10px 0 0;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  background-color: var(--nave-bg-color);
+  color: var(--text-dark);
+}
+
+.bage-body form div .update-btn:hover{
+  background-color: var(--text-dark);
+  color: var(--text-light);
+  text-decoration: none;
 }
 
 .bage-body form input[type="submit"]{
@@ -417,6 +466,7 @@ aside nav button span{
   font-size: 16px;
   color: var(--text-dark);
 }
+
 
 .bage form input{
   width: 100%;

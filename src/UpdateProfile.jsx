@@ -16,14 +16,15 @@ const UpdateProfile = () => {
   const [profile, setProfile] = useState(null);
   // const [isSidebarActive, setIsSidebarActive] = useContext(SidebarContext);
 
-  const [updateApi] = useState('https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/users/profile/');
-  const [checkTokenApi] = useState('https://fictional-space-acorn-w6p64gx55qj3g6pv-4000.app.github.dev/api/auth');
+  const [updateApi] = useState('https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/users/profile');
+  const [checkTokenApi] = useState('https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/auth');
   const navigate = useNavigate();
 
   // useEffect(() => {
   //   const checkToken = async () => {
   //       if (isLoggedIn) {
   //           const token = localStorage.getItem('token');
+  //           console.log(token);
   //           try {
   //               const response = await fetch(checkTokenApi, {
   //                   method: 'GET',
