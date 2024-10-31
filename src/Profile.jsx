@@ -17,7 +17,7 @@ const Profile = () => {
     // const [email] = useState('');
     // const [dateOfBirth, setDateOfBirth] = useState('');
     // const [phoneNumber, setPhoneNumber] = useState('');
-    const [profile, setProfile] = useState(null);
+    const [image, setImage] = useState(null);
 
     useEffect(() => {
         const checkToken = async () => {
@@ -58,7 +58,7 @@ const Profile = () => {
         const token = localStorage.getItem('token');
         const formData = new FormData();
         formData.append('content', content);
-        if (profile) formData.append('profile', profile);
+        if (image) formData.append('image', image);
         try{
             const response = await fetch(createPostApi,{
                 method:"POST",
@@ -122,8 +122,8 @@ const Profile = () => {
                 <h2>Create new post</h2>
                 <label className='view-label' htmlFor="content">post content</label>
                 <input type="text" name="content" value={content} onChange={(e) => setcontent(e.target.value)} required/>
-                <label htmlFor="profile">update pic:</label>
-                <input type="file" name="profile" onChange={(e) => setProfile(e.target.files[0])}/>
+                <label htmlFor="image">upload image</label>
+                <input type="file" name="image" onChange={(e) => setImage(e.target.files[0])}/>
                 <input type="submit" value="Create"/>
             </form>
             <div className='posts-box'>
