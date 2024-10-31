@@ -10,7 +10,7 @@ const Login = () => {
     // handel variables
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loginApi] = useState('');
+    const [loginApi] = useState('https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/auth/login');
     const [checkTokenApi] = useState('');
     const [isLoggedIn, setIsLoggedIn]= useContext(LoginContext);
     const [isSidebarActive, setIsSidebarActive] = useContext(SidebarContext);
@@ -19,64 +19,61 @@ const Login = () => {
 
 
     // handel verfing token
-    // useEffect(() => {
-    //     const checkToken = async () => {
-    //         if (isLoggedIn) {
-    //             const token = localStorage.getItem('token');
-    //             try {
-    //                 const response = await fetch({checkTokenApi}, {
-    //                     method: 'POST',
-    //                     headers: {
-    //                         'Content-Type': 'application/json',
-    //                         'Authorization': `Bearer ${token}`, // send token as part of headers
-    //                     },
-    //                     body: JSON.stringify({ token }),
-    //                 });
+    useEffect(() => {
+        const checkToken = async () => {
+            if (isLoggedIn) {
+                const token = localStorage.getItem('token');
+                try {
+                    const response = await fetch({checkTokenApi}, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`, // send token as part of headers
+                        },
+                        body: JSON.stringify({ token }),
+                    });
 
-    //                 if (response.ok) {
-    //                     navigate('/dashboard'); //الراوت اللي هو فيه من قبل كدا
-    //                 } else {
-    //                     setIsLoggedIn(false);
-    //                     localStorage.removeItem('token');
-    //                     navigate('/login');
-    //                 }
-    //             } catch (error) {
-    //                 console.error('Error verifying token:', error);
-    //                 setIsLoggedIn(false);
-    //                 localStorage.removeItem('token');
-    //                 navigate('/login');
-    //             }
-    //         }
-    //     };
-    //     checkToken();
-    // }, [isLoggedIn, navigate, setIsLoggedIn, checkTokenApi]);
+                    if (response.ok) {
+                        navigate('/dashboard'); //الراوت اللي هو فيه من قبل كدا
+                    } else {
+                        setIsLoggedIn(false);
+                        localStorage.removeItem('token');
+                        navigate('/login');
+                    }
+                } catch (error) {
+                    console.error('Error verifying token:', error);
+                    setIsLoggedIn(false);
+                    localStorage.removeItem('token');
+                    navigate('/login');
+                }
+            }
+        };
+        checkToken();
+    }, [isLoggedIn, navigate, setIsLoggedIn, checkTokenApi]);
 
 
     // handel athontication
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // const response = await fetch({api}, {
-        // method: 'POST',
-        // headers: { 'Content-Type': 'application/json' },
-        // body: JSON.stringify({ email, password }),
-        // });
-
-        // if (response.ok) {
-        // const data = await response.json();
-        // localStorage.setItem('token', data.token); 
-        // setIsLoggedIn(true);
-        // setIsSidebarActive(false);
-        // navigate('/dashboard');
-        // } else {
-        // alert('Invalid credentials');
-        // }
-    localStorage.setItem('token', "12345678"); // during working
-    setIsLoggedIn(true);
-    setIsSidebarActive(false);
-    // window.location.href = '/dashboard';
-    navigate('/dashboard');
-    console.log(loginApi);
-  };
+        const response = await fetch(loginApi, {
+        method: 'POST',
+        headers:{
+            "Content-Type":"application/json",
+        },
+        body: JSON.stringify({ email, password }),
+        });
+        console.log(response);
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+            localStorage.setItem('token', data.token); 
+            setIsLoggedIn(true);
+            setIsSidebarActive(false);
+            navigate('/profile');
+        } else {
+            alert('Invalid credentials');
+        }
+    };
 
 
     return (
