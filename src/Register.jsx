@@ -76,12 +76,10 @@ const Register = () => {
                 navigate('/login');
             }
             else{
-                console.log(1);
                 alert(await response.text());
             }
         }
         catch(error){
-            console.log(2);
             console.error('Error: ', error);
             alert('Server Error');
         }

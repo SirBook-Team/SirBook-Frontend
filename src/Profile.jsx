@@ -1,19 +1,28 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import profileImg from './images/profile.png';
-import { LoginContext } from './LoginContext';
 
+import { LoginContext } from './LoginContext';
+import { SidebarContext } from './SidebarContext';
 const Profile = () => {
     const [isLoggedIn, setIsLoggedIn]= useContext(LoginContext);
+    const [isSidebarActive, setIsSidebarActive] = useContext(SidebarContext);
     const [checkTokenApi] = useState('https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/auth');
     const navigate = useNavigate();
+    const [user, setUser] = useState(null);
+    const [firstname, setFirstName] = useState('');
+    const [lastname, setLastName] = useState('');
+    const [email] = useState('');
+    const [dateOfBirth, setDateOfBirth] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [profile, setProfile] = useState(null);
 
     useEffect(() => {
         const checkToken = async () => {
             if (isLoggedIn) {
                 const token = localStorage.getItem('token');
                 try {
-                    const response = await fetch({checkTokenApi}, {
+                    const response = await fetch(checkTokenApi, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
@@ -23,7 +32,9 @@ const Profile = () => {
                     });
 
                     if (response.ok) {
-                        navigate('/dashboard'); 
+                        const data = await response.json();
+                        console.log(data);
+                        setUser(data);
                     } else {
                         setIsLoggedIn(false);
                         localStorage.removeItem('token');
@@ -39,25 +50,25 @@ const Profile = () => {
         };
         checkToken();
     }, [isLoggedIn, navigate, setIsLoggedIn, checkTokenApi]);
-
   return (
     <>
-        <section className='bage-body'>
+        <section className='bage-body '>
+            <form className='profile-container'>
             <div className='profile-container'>
-                {/* <h1>Your Profile</h1>
-                <hr/> */}
                 <div className="main-box">
-                    <img alt='Profile-image' src={profileImg}/>
-                    <h2>Ibrahim Adel</h2>
-                {/* <div className="">
-                    <h2>Ibrahim Adel</h2>
-                    <p>developer</p>
-                </div> */}
+                    <img alt={ user ? `${user.firstname} ${user.lastname}'s profile` : 'profile'} src={ user && user.profile ? user.profile : profileImg}/>
                 </div>
                 <div className='posts-box'>
-
                 </div>
             </div>
+            <h2>{user ? `${user.firstname} ${user.lastname}` : 'user\'s name'}</h2>
+                <input type="email" name="email" required readOnly/>
+                {/* <input type="password" name="password" value={us} required readOnly/> */}
+                <div>
+                    <Link to="/register">update profile</Link>
+                </div>
+            </form>
+            
         </section>
     </>
   )
