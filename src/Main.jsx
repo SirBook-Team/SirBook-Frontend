@@ -20,7 +20,6 @@ const Main = () => {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
     const [checkTokenApi] = useState('https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/auth');
-    const [deletePostApi, setDeletePostApi] = useState('');
 
 
     useEffect(() => {
@@ -66,9 +65,8 @@ const Main = () => {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`, // send token as part of headers
+                            'Authorization': `Bearer ${token}`, 
                         },
-                        // body: JSON.stringify({ token }),
                     });
 
                     if (response.ok) {
@@ -84,7 +82,7 @@ const Main = () => {
             }
         };
         getPosts();
-    }, [isLoggedIn, postsApi, setPosts]);
+    }, [isLoggedIn, postsApi, setPosts, error]);
 
     const viewPuplisherProfile = async (e) => {
         // e.preventDefault();
@@ -115,25 +113,24 @@ const Main = () => {
     };
 
     const deletePost = async (postId) => {
+        console.log(postId);
         const token = localStorage.getItem('token');
-        setDeletePostApi(`https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/posts/delete/${postId}`);
+        const deletePostApi = `https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/posts/delete/${postId}`;
+        console.log(deletePostApi);
         try{
-            const response = await fetch('',{
+            const response = await fetch(deletePostApi,{
                 method:"POST",
                 headers:{
                     // "Content-Type":"application/json",
                     'Authorization': `Bearer ${token}`,
                 },
-                // body: JSON.stringify({ firstname, lastname, email, password, confirmPassword, gender, dateOfBirth, phoneNumber })
-                // body : formData,
-
             });
             console.log(response);
             if(response.ok){
-                navigate('/profile');
+                navigate('/main');
             }
             else{
-                // alert('error');
+                alert('error in delete post');
             }
         }
         catch(error){
@@ -175,6 +172,11 @@ const Main = () => {
                     </button>
                     <p>The evolution of technology has reshaped nearly every aspect of our lives, from how we communicate to how we work, learn, and entertain ourselves. The constant advancements in digital tools have made information and services more accessible, bridging gaps that once seemed insurmountable. Innovations like artificial intelligence, cloud computing, and mobile technology have redefined business models, enabling companies to reach global audiences and offer highly personalized experiences. However, with these benefits come challenges, including data privacy concerns and the need for digital literacy. As technology continues to evolve, it presents both opportunities and responsibilities, urging society to adopt these tools thoughtfully and ethically for a better future.</p>
                     <img className='post-img' alt={ user ? `${user.firstname} ${user.lastname}'s profile` : 'profile'} src={ user && user.profile ? user.profile : profileImg}/>
+                    <div className='post-comments'>
+                        <div className='create-comment'>
+
+                        </div>
+                    </div>
                 </div> */}
             </div>
         </section>
