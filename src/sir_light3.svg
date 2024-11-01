@@ -6,7 +6,7 @@
 <rect width="100%" height="100%" class="light"/>
 <style type="text/css">
 	:root{
-	--nave-bg-color: #cbcbff;
+	--nave-bg-color: #dcdcfb;
 	--border-color: #a5a5ff;
 	--bage-bg-color: #f4f4ff;
 	--boxes-bg-color: #ffffff;
