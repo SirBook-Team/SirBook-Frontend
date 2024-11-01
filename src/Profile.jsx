@@ -164,18 +164,24 @@ const Profile = () => {
             </form>
             <div className='posts-box'>
                 <div className='post-box'>
-                    <button className='user-box' onClick={viewPuplisherProfile}>
-                        <img className='user-post-img' alt={ user ? `${user.firstname} ${user.lastname}'s profile` : 'profile'} src={ user && user.profile ? user.profile : profileImg}/>
-                        <h3>{user ? `${user.firstname} ${user.lastname}` : 'user\'s name'}</h3>
-                    </button>
+                    <div>
+                        <button className='user-box' onClick={viewPuplisherProfile}>
+                            <img className='user-post-img' alt={ user ? `${user.firstname} ${user.lastname}'s profile` : 'profile'} src={ user && user.profile ? user.profile : profileImg}/>
+                            <h3>{user ? `${user.firstname} ${user.lastname}` : 'user\'s name'}</h3>
+                        </button>
+                        <button className='cross-btn'><i className="fas fa-times"></i></button>
+                    </div>
                     <p>The evolution of technology has reshaped nearly every aspect of our lives, from how we communicate to how we work, learn, and entertain ourselves. The constant advancements in digital tools have made information and services more accessible, bridging gaps that once seemed insurmountable. Innovations like artificial intelligence, cloud computing, and mobile technology have redefined business models, enabling companies to reach global audiences and offer highly personalized experiences. However, with these benefits come challenges, including data privacy concerns and the need for digital literacy. As technology continues to evolve, it presents both opportunities and responsibilities, urging society to adopt these tools thoughtfully and ethically for a better future.</p>
                     <img className='post-img' alt={ user ? `${user.firstname} ${user.lastname}'s profile` : 'profile'} src={ user && user.profile ? user.profile : profileImg}/>
                 </div>
                 <div className='post-box'>
-                    <button className='user-box' onClick={viewPuplisherProfile}>
-                        <img className='user-post-img' alt={ user ? `${user.firstname} ${user.lastname}'s profile` : 'profile'} src={ user && user.profile ? user.profile : profileImg}/>
-                        <h3>{user ? `${user.firstname} ${user.lastname}` : 'user\'s name'}</h3>
-                    </button>
+                    <div>
+                        <button className='user-box' onClick={viewPuplisherProfile}>
+                            <img className='user-post-img' alt={ user ? `${user.firstname} ${user.lastname}'s profile` : 'profile'} src={ user && user.profile ? user.profile : profileImg}/>
+                            <h3>{user ? `${user.firstname} ${user.lastname}` : 'user\'s name'}</h3>
+                        </button>
+                        <button className='cross-btn'><i className="fas fa-times"></i></button>
+                    </div>
                     <p>The evolution of technology has reshaped nearly every aspect of our lives, from how we communicate to how we work, learn, and entertain ourselves. The constant advancements in digital tools have made information and services more accessible, bridging gaps that once seemed insurmountable. Innovations like artificial intelligence, cloud computing, and mobile technology have redefined business models, enabling companies to reach global audiences and offer highly personalized experiences. However, with these benefits come challenges, including data privacy concerns and the need for digital literacy. As technology continues to evolve, it presents both opportunities and responsibilities, urging society to adopt these tools thoughtfully and ethically for a better future.</p>
                     <img className='post-img' alt={ user ? `${user.firstname} ${user.lastname}'s profile` : 'profile'} src={ user && user.profile ? user.profile : profileImg}/>
                 </div>

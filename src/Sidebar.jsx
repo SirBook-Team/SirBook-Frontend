@@ -17,7 +17,7 @@ const Sidebar = () => {
         setIsLoggedIn(false);
         setIsSidebarActive(false);
         navigate('/login');
-      };
+    };
 
   return (
     <>
@@ -25,7 +25,7 @@ const Sidebar = () => {
         <aside className={isSidebarActive ? 'active' : ''}>
             <nav>
                 <ul>
-                    <li><Link to='./'><i className="fas fa-home"></i><span className="sidebar-links ">Home</span></Link></li>
+                    <li><Link to='/'><i className="fas fa-home"></i><span className="sidebar-links ">Home</span></Link></li>
                     {/* <li><Link to='./'><i className="fas fa-info-circle"></i><span className="sidebar-links ">About</span></Link></li> */}
                     {/* <li><Link to='./'><i className="fas fa-book"></i><span className="sidebar-links ">Courses</span></Link></li> */}
                     {/* <li><Link to='./'><i className="fas fa-users"></i><span className="sidebar-links ">Teachers</span></Link></li> */}

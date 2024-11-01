@@ -12,6 +12,7 @@ import { SidebarProvider } from './SidebarContext';
 import Profile from './Profile';
 import UpdateProfile from './UpdateProfile';
 import Main from './Main';
+import UserProfile from './UserProfile';
 
 import './Reset.css';
 import './App.css';
@@ -28,10 +29,11 @@ function App() {
             {/* <div className='bage-body'></div> */}
             <Routes>
               {/* <Route path='/' element={<Home/>}/> */}
-              <Route path='/main' element={<Main/>}/>
+              <Route path='/' element={<Main/>}/>
               <Route path='/login' element={<Login/>}/>
               <Route path='/register' element={<Register/>}/>
               <Route path='/profile' element={<Profile/>}/>
+              <Route path='/profile/:username' element={<UserProfile/>}/>
               <Route path='/profile/Update' element={<UpdateProfile/>}/>
             </Routes>
           </BrowserRouter>

@@ -548,6 +548,7 @@ aside nav button span{
   max-width: 900px;
   display: flex;
   flex-direction: row;
+  justify-content: center;
   gap: 20px;
   padding: 20px;
   margin: 30px;
