@@ -102,10 +102,10 @@ const Register = () => {
                 <label htmlFor="gender">gender:</label>
                 <div className='radio-div'>
                     <div>
-                        <input type="radio" name='gender' onSelect={(e) => setGender('male')} value='male' required/><span>male</span>
+                        <input type="radio" name='gender' onChange={(e) => setGender('male')} value='male' required/><span>male</span>
                     </div>
                     <div>
-                        <input type="radio" name='gender' onSelect={(e) => setGender('female')} value='female' required/><span>female</span>
+                        <input type="radio" name='gender' onChange={(e) => setGender('female')} value='female' required/><span>female</span>
                     </div>
                 </div>
                 {/* <input type="text" name="gender" placeholder="gender" onChange={(e) => setGender(e.target.value)} required/> */}
