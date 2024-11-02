@@ -16,6 +16,8 @@
   --text-black: black;
   --main-link-color: blue;
   --font-family: Helvetica, Arial, sans-serif;
+  --red: #980202;
+  --dark-red:#590000;
 }
 
 h2{
@@ -611,6 +613,40 @@ aside nav button span{
   border-radius: 10px;
 }
 
+.bage-body .posts-box .post-box textarea{
+  padding: 15px;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  font-size: 16px;
+  resize: none;
+  background-color: var(--bage-bg-color);
+  color: var(--text-black);
+  position: absolute;
+  right: 105px;
+  left: 0px;
+  scrollbar-width: none;
+}
+
+.bage-body .posts-box .post-box .post-btn{
+  width: fit-content;
+  padding: 15px 25px;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  background-color: var(--light-text-dark);
+  color: var(--text-light);
+  position: absolute;
+  right: 10px;
+}
+
+.bage-body .posts-box .post-box .post-btn:hover{
+  background-color: var(--text-dark);
+  color: var(--text-light);
+}
+
 .bage-body .posts-box .post-box .post-img{
   /* height: 300px; */
   width: 80%;
@@ -621,11 +657,23 @@ aside nav button span{
   margin: auto;
 }
 
-.bage-body .posts-box .post-box div{
+.bage-body .posts-box .post-box .div{
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 0 0 15px 0;
+}
+
+.bage-body .posts-box .post-box .create-comment{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  height: 65px;
+  background-color: var(--bage-bg-color);
+  border-radius: 8px;
+  margin: 10px 0;
 }
 
 .bage-body .posts-box .post-box div .cross-btn{
@@ -640,7 +688,7 @@ aside nav button span{
 }
 
 .bage-body .posts-box .post-box div .cross-btn:hover{
-  background-color: rgb(152, 2, 2);
+  background-color: var(--dark-red);
   color: var(--text-light);
 }
 
@@ -671,6 +719,73 @@ aside nav button span{
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--border-color);
+}
+
+.bage-body .posts-box .post-box .comment-box{
+  background-color: var(--bage-bg-color);
+  border-radius: 8px;
+  margin: 10px 0;
+  padding: 15px;
+}
+
+.bage-body .posts-box .post-box .comment-box p{
+  margin: 0 0 0 5px;
+}
+
+.bage-body .posts-box .post-box .view-likes{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 10px 0;
+  background-color: var(--bage-bg-color);
+  padding: 10px 0;
+  border-radius: 6px;
+}
+
+.bage-body .posts-box .post-box .view-likes div{
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bage-body .posts-box .post-box .view-likes div .like-btn{
+  border: none;
+  outline: none;
+  background-color: inherit;
+  font-size: 14px;
+  background-color: var(--border-color);
+  color: var(--text-light);
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.bage-body .posts-box .post-box .view-likes div .like-btn.active{
+  background-color: var(--light-text-dark);
+}
+
+.bage-body .posts-box .post-box div .cross-comment-btn{
+  border: none;
+  outline: none;
+  background-color: inherit;
+  font-size: 14px;
+  background-color: var(--red);
+  color: var(--text-light);
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bage-body .posts-box .post-box div .cross-comment-btn:hover{
+  background-color: var(--dark-red);
 }
 
 

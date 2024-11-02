@@ -55,6 +55,9 @@ const Register = () => {
                     navigate('/login');
                 }
             }
+            else{
+                navigate('/login');
+            }
         };
         checkToken();
     }, [isLoggedIn, navigate, setIsLoggedIn, checkTokenApi]);

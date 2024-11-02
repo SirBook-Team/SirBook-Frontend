@@ -47,6 +47,9 @@ const Login = () => {
                     navigate('/login');
                 }
             }
+            else{
+                navigate('/login');
+            }
         };
         checkToken();
     }, [isLoggedIn, navigate, setIsLoggedIn, checkTokenApi]);

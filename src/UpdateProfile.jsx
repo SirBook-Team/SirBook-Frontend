@@ -20,40 +20,44 @@ const UpdateProfile = () => {
   const [checkTokenApi] = useState('https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/auth');
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const checkToken = async () => {
-  //       if (isLoggedIn) {
-  //           const token = localStorage.getItem('token');
-  //           console.log(token);
-  //           try {
-  //               const response = await fetch(checkTokenApi, {
-  //                   method: 'GET',
-  //                   headers: {
-  //                       'Content-Type': 'application/json',
-  //                       'Authorization': `Bearer ${token}`, // send token as part of headers
-  //                   },
-  //                   // body: JSON.stringify({ token }),
-  //               });
+  useEffect(() => {
+    const checkToken = async () => {
+        if (isLoggedIn) {
+            const token = localStorage.getItem('token');
+            console.log(token);
+            try {
+                const response = await fetch(checkTokenApi, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`, // send token as part of headers
+                    },
+                });
 
-  //               if (response.ok) {
-  //                   const data = await response.json();
-  //                   console.log(data);
-  //                   console.log('OK');
-  //               } else {
-  //                   setIsLoggedIn(false);
-  //                   localStorage.removeItem('token');
-  //                   navigate('/login');
-  //               }
-  //           } catch (error) {
-  //               console.error('Error verifying token:', error);
-  //               setIsLoggedIn(false);
-  //               localStorage.removeItem('token');
-  //               navigate('/login');
-  //           }
-  //       }
-  //   };
-  //   checkToken();
-  // }, [isLoggedIn, navigate, setIsLoggedIn, checkTokenApi]);
+                if (response.ok) {
+                    const data = await response.json();
+                    setDateOfBirth(data.dateOfBirth);
+                    setFirstName(data.firstname);
+                    setLastName(data.lastname);
+                    setPhoneNumber(data.phoneNumber);
+                } else {
+                    setIsLoggedIn(false);
+                    localStorage.removeItem('token');
+                    navigate('/login');
+                }
+            } catch (error) {
+                console.error('Error verifying token:', error);
+                setIsLoggedIn(false);
+                localStorage.removeItem('token');
+                navigate('/login');
+            }
+        }
+        else{
+            navigate('/login');
+        }
+    };
+    checkToken();
+  }, [isLoggedIn, navigate, setIsLoggedIn, checkTokenApi]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -71,10 +75,8 @@ const UpdateProfile = () => {
         const response = await fetch(updateApi,{
             method:"POST",
             headers:{
-                // "Content-Type":"application/json",
                 'Authorization': `Bearer ${token}`,
             },
-            // body: JSON.stringify({ firstname, lastname, email, dateOfBirth, phoneNumber, profile })
             body: formData,
         });
         console.log(response);
@@ -102,14 +104,6 @@ const UpdateProfile = () => {
                 <input type="text" name="firstname" placeholder="update your firstname" value={firstname} onChange={(e) => setFirstName(e.target.value)} required/>
                 <label htmlFor="lastname">update  your lastname:</label>
                 <input type="text" name="lastname" placeholder="update your lastname" value={lastname} onChange={(e) => setLastName(e.target.value)} required/>
-                <label htmlFor="email">your email:</label>
-                <input type="email" name="email" placeholder="your email" value={email} required readOnly/>
-                {/* <label htmlFor="previous-password">previous password:</label> */}
-                {/* <input type="password" name="previous-password" placeholder="enter your old password" required/> */}
-                {/* <label htmlFor="new-password">new password:</label> */}
-                {/* <input type="password" name="new-password" placeholder="enter your new password" required/> */}
-                {/* <label htmlFor="confirm-password">confirm password:</label> */}
-                {/* <input type="password" name="confirm-password" placeholder="confirm your new password" required/> */}
                 <label htmlFor="dateOfBirth">update  your birth date:</label>
                 <input type="date" name="dateOfBirth" placeholder="update  your birth date" value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} required/>
                 <label htmlFor="phoneNumber">update  your phone number:</label>

@@ -23,20 +23,49 @@ const UserProfile = () => {
     const fname = localStorage.getItem('fname');
     const lname = localStorage.getItem('lname');
 
+    const getPosts = async () => {
+        const token = localStorage.getItem('token');
+        const userEmail = localStorage.getItem('userEmail');
+        const postsApi = `https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/posts/${userEmail}`;
+        console.log(postsApi);
+        try {
+            console.log(1);
+            const response = await fetch(postsApi, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`, 
+                },
+            });
+            console.log(response);
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                setPosts(data);
+            } else {
+                console.log(2);
+                alert('Error in fetching posts');
+            }
+        } catch (error) {
+            console.log(3);
+            console.error('Error fetching posts:', error);
+        }
+    };
+
     useEffect(() => {
         const checkToken = async () => {
             if (isLoggedIn) {
                 const token = localStorage.getItem('token');
+                console.log(token);
                 try {
                     const response = await fetch(checkTokenApi, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`, // send token as part of headers
+                            'Authorization': `Bearer ${token}`, 
                         },
-                        // body: JSON.stringify({ token }),
                     });
-
                     if (response.ok) {
                         const data = await response.json();
                         console.log(data);
@@ -53,64 +82,40 @@ const UserProfile = () => {
                     navigate('/login');
                 }
             }
+            else{
+                navigate('/login');
+            }
         };
         checkToken();
     }, [isLoggedIn, navigate, setIsLoggedIn, checkTokenApi]);
 
-    useEffect(() => {
-        const getPosts = async () => {
-            const token = localStorage.getItem('token');
-            const userEmail = localStorage.getItem('userEmail');
-            const postsApi = `https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/posts/${userEmail}`;
-            try {
-                const response = await fetch(postsApi, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`, 
-                    },
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log(data);
-                    setPosts(data);
-                } else {
-                    // console.error('response not ok:', error);
-                    alert('error in fetching posts');
-                }
-            } catch (error) {
-                console.error('Error fetching posts:', error);
-            }
-        };
-        getPosts();
-    }, [isLoggedIn]);
     
-    const viewPuplisherProfile = async (userEmail, firstname, lastname) => {
-        const token = localStorage.getItem('token');
-        const viewProfileApi = `https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/users/${userEmail}`;
-        try{
-            const response = await fetch(viewProfileApi,{
-                method:"GET",
-                headers:{
-                    // "Content-Type":"application/json",
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
-            console.log(response);
-            if(response.ok){
-                localStorage.setItem('userEmail', `${userEmail}`);
-                navigate(`/profile/${firstname}${lastname}`);
-            }
-            else{
-                alert('error');
-            }
-        }
-        catch(error){
-            console.error('Error: ', error);
-            alert('Server Error');
-        }
-    };
+    
+    // const viewPuplisherProfile = async (userEmail, firstname, lastname) => {
+    //     const token = localStorage.getItem('token');
+    //     const viewProfileApi = `https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/users/${userEmail}`;
+    //     try{
+    //         const response = await fetch(viewProfileApi,{
+    //             method:"GET",
+    //             headers:{
+    //                 // "Content-Type":"application/json",
+    //                 'Authorization': `Bearer ${token}`,
+    //             },
+    //         });
+    //         console.log(response);
+    //         if(response.ok){
+    //             localStorage.setItem('userEmail', `${userEmail}`);
+    //             navigate(`/profile/${firstname}${lastname}`);
+    //         }
+    //         else{
+    //             alert('error');
+    //         }
+    //     }
+    //     catch(error){
+    //         console.error('Error: ', error);
+    //         alert('Server Error');
+    //     }
+    // };
 
   return (
     <>
@@ -132,10 +137,10 @@ const UserProfile = () => {
                 {posts.map((post) => (
                     <div key={post.id} className="post-box">
                         <div>
-                            <button className='user-box' onClick={viewPuplisherProfile}>
+                            {/* <button className='user-box' onClick={viewPuplisherProfile}>
                                 <img className='user-post-img' alt={ post ? `${post.owner.firstname} ${post.owner.lastname}'s profile` : 'profile'} src={ (post && post.owner && post.owner.profile) ? post.owner.profile : profileImg}/>
                                 <h3>{(post && post.owner) ? `${post.owner.firstname} ${post.owner.lastname}` : 'user\'s name'}</h3>
-                            </button>
+                            </button> */}
                             {/* <button className='cross-btn' onClick={() => deletePost(post.id)}><i className="fas fa-times"></i></button> */}
                         </div>
                         <p>{(post && post.content) ? `${post.content}` : ``}</p>
