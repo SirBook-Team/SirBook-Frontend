@@ -15,7 +15,6 @@ const Login = () => {
     const [isLoggedIn, setIsLoggedIn]= useContext(LoginContext);
     const [isSidebarActive, setIsSidebarActive] = useContext(SidebarContext);
     const navigate = useNavigate();
-    console.log(email, password);
 
 
     // handel verfing token
@@ -28,13 +27,13 @@ const Login = () => {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`, // send token as part of headers
+                            'Authorization': `Bearer ${token}`, 
                         },
                         body: JSON.stringify({ token }),
                     });
 
                     if (response.ok) {
-                        navigate('/dashboard'); //الراوت اللي هو فيه من قبل كدا
+                        navigate('/dashboard'); 
                     } else {
                         setIsLoggedIn(false);
                         localStorage.removeItem('token');
@@ -65,10 +64,8 @@ const Login = () => {
         },
         body: JSON.stringify({ email, password }),
         });
-        console.log(response);
         if (response.ok) {
             const data = await response.json();
-            console.log(data);
             localStorage.setItem('token', data.token); 
             setIsLoggedIn(true);
             setIsSidebarActive(false);

@@ -25,11 +25,8 @@ const Profile = () => {
 
     const getPosts = async (userEmail) => {
         const token = localStorage.getItem('token');
-        // console.log(token);
         const postsApi = `https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/posts/${userEmail}`;
-        console.log(postsApi);
         try {
-            console.log(1);
             const response = await fetch(postsApi, {
                 method: 'GET',
                 headers: {
@@ -37,18 +34,13 @@ const Profile = () => {
                     'Authorization': `Bearer ${token}`, 
                 },
             });
-            console.log(response);
-
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
                 setPosts(data);
             } else {
-                console.log(2);
                 alert('Error in fetching posts');
             }
         } catch (error) {
-            console.log(3);
             console.error('Error fetching posts:', error);
         }
     };
@@ -57,7 +49,6 @@ const Profile = () => {
         const checkToken = async () => {
             if (isLoggedIn) {
                 const token = localStorage.getItem('token');
-                console.log(token);
                 try {
                     const response = await fetch(checkTokenApi, {
                         method: 'GET',
@@ -66,11 +57,9 @@ const Profile = () => {
                             'Authorization': `Bearer ${token}`, 
                         },
                     });
-
                     if (response.ok) {
                         const data = await response.json();
                         user = data;
-                        console.log(user);
                         setUserRef(user);
                         setDateOfBirth(user.dateOfBirth);
                         setEmail(user.email);
@@ -78,7 +67,6 @@ const Profile = () => {
                         setLastName(user.lastname);
                         setPhoneNumber(user.phoneNumber);
                         setProfile(user.profile);
-                        console.log(email, firstname, lastname, dateOfBirth, phoneNumber);
                     } else {
                         setIsLoggedIn(false);
                         localStorage.removeItem('token');
@@ -114,14 +102,11 @@ const Profile = () => {
             const response = await fetch(createPostApi,{
                 method:"POST",
                 headers:{
-                    // "Content-Type":"application/json",
                     'Authorization': `Bearer ${token}`,
                 },
-                // body: JSON.stringify({ firstname, lastname, email, password, confirmPassword, gender, dateOfBirth, phoneNumber })
                 body : formData,
 
             });
-            console.log(response);
             if(response.ok){
                 window.location.reload();
             }
@@ -135,34 +120,10 @@ const Profile = () => {
         }
     };
 
-    const viewPuplisherProfile = async (e) => {
-        e.preventDefault();
-        const token = localStorage.getItem('token');
-        const formData = new FormData();
-        formData.append('content', content);
-        if (image) formData.append('image', image);
-        try{
-            const response = await fetch(createPostApi,{
-                method:"POST",
-                headers:{
-                    'Authorization': `Bearer ${token}`,
-                },
-                body : formData,
-
-            });
-            console.log(response);
-            if(response.ok){
-                navigate('/profile');
-            }
-            else{
-                alert('error');
-            }
-        }
-        catch(error){
-            console.error('Error: ', error);
-            alert('Server Error');
-        }
+    const viewPuplisherProfile = async (userId) => {
+        navigate(`/profile/${userId}`);
     };
+
 
     const deletePost = async (postId) => {
         console.log(postId);
@@ -176,7 +137,6 @@ const Profile = () => {
                     'Authorization': `Bearer ${token}`,
                 },
             });
-            console.log(response);
             if(response.ok){
                 window.location.reload();
             }
@@ -203,7 +163,6 @@ const Profile = () => {
                 },
                 body: JSON.stringify({ content: comment }),
             });
-            console.log(response);
             if(response.ok){
                 window.location.reload();
             }
@@ -228,7 +187,6 @@ const Profile = () => {
                     'Authorization': `Bearer ${token}`,
                 },
             });
-            console.log(response);
             if(response.ok){
                 window.location.reload();
             }
@@ -253,7 +211,6 @@ const Profile = () => {
                     'Authorization': `Bearer ${token}`,
                 },
             });
-            console.log(response);
             if(response.ok){
                 window.location.reload();
             }
@@ -315,76 +272,50 @@ const Profile = () => {
             </form>
             <div className='posts-box'>
                 {posts.map((post) => (
-                        <div key={post.id} className="post-box">
-                            <div className='div'> 
-                                <button className='user-box' onClick={() => viewPuplisherProfile(post.owner.email, post.owner.firstname, post.owner.lastname, post.owner.profile)}>
-                                    <img className='user-post-img' alt={ post ? `${post.owner.firstname} ${post.owner.lastname}'s profile` : 'profile'} src={ (post && post.owner && post.owner.profile) ? post.owner.profile : profileImg}/>
-                                    <h3>{(post && post.owner) ? `${post.owner.firstname} ${post.owner.lastname}` : 'user\'s name'}</h3>
-                                </button>
-                                {post.owner.email === userRef?.email && (
-                                    <button className='cross-btn' onClick={() => deletePost(post.id)}><i className="fas fa-times"></i></button>
-                                )}
+                    <div key={post.id} className="post-box">
+                        <div className='div'> 
+                            <button className='user-box' onClick={() => viewPuplisherProfile(post.owner.id)}>
+                                <img className='user-post-img' alt={ post ? `${post.owner.firstname} ${post.owner.lastname}'s profile` : 'profile'} src={ (post && post.owner && post.owner.profile) ? post.owner.profile : profileImg}/>
+                                <h3>{(post && post.owner) ? `${post.owner.firstname} ${post.owner.lastname}` : 'user\'s name'}</h3>
+                            </button>
+                            {post.owner.email === userRef?.email && (
+                                <button className='cross-btn' onClick={() => deletePost(post.id)}><i className="fas fa-times"></i></button>
+                            )}
+                        </div>
+                        <p>{(post && post.content) ? `${post.content}` : ``}</p>
+                        {(post && post.image) && <img className='post-img' alt={ post ? `${post.owner.firstname} ${post.owner.lastname}'s profile` : 'profile'} src={ post.image}/>}
+                        <div className = 'create-comment'>
+                            <textarea placeholder='comment. . .' name="comment" value={comment} onChange={(e) => setComment(e.target.value)} required maxLength='200' rows='2'/>
+                            <button className = 'post-btn' onClick={() => createComment(post.id)}>Post</button>
+                        </div>
+                        <div className='view-likes'>
+                            <div>
+                                <span>{post.reacts.length}</span>
                             </div>
-                            <p>{(post && post.content) ? `${post.content}` : ``}</p>
-                            {(post && post.image) && <img className='post-img' alt={ post ? `${post.owner.firstname} ${post.owner.lastname}'s profile` : 'profile'} src={ post.image}/>}
-                            <div className = 'create-comment'>
-                                <textarea placeholder='comment. . .' name="comment" value={comment} onChange={(e) => setComment(e.target.value)} required maxLength='200' rows='2'/>
-                                <button className = 'post-btn' onClick={() => createComment(post.id)}>Post</button>
-                            </div>
-                            <div className='view-likes'>
-                                <div>
-                                    <span>{post.reacts.length}</span>
-                                </div>
-                                <div>
-                                    <button className={post.reacts.find(react => react.email === userRef.email) ? 'like-btn active' : 'like-btn'} onClick={() => addReact(post.id)}><i className="fas fa-thumbs-up"></i></button>
-                                </div>
-                                {/* <button className='like-btn'><i className="fas fa-thumbs-down"></i></button>
-                                <button className='like-btn'><i className="fas fa-heart"></i></button> */}
-                            </div>
-                            <div className = 'comments-box'>
-                                {post.comments.map((comment) => (
-                                    <div key={comment.id} className='comment-box'>
-                                        {/* <hr/> */}
-                                        <div className='div'>
-                                            <button className='user-box' onClick={() => viewPuplisherProfile(comment.owner.email, comment.owner.firstname, comment.owner.lastname, comment.owner.profile)}>
-                                                <img className='user-post-img' alt={ comment ? `${comment.owner.firstname} ${comment.owner.lastname}'s profile` : 'profile'} src={ (comment && comment.owner && comment.owner.profile) ? comment.owner.profile : profileImg}/>
-                                                <h3>{(comment && comment.owner) ? `${comment.owner.firstname} ${comment.owner.lastname}` : 'user\'s name'}</h3>
-                                            </button>
-                                            {comment.owner.email === userRef?.email && (
-                                                <button className='cross-comment-btn' onClick={() => deleteComment(comment.id)}>
-                                                    <i className="fas fa-times"></i>
-                                                </button>
-                                            )}
-                                        </div>
-                                        <p>{(comment && comment.content) ? `${comment.content}` : ``}</p>
-                                        {/* <hr/> */}
-                                    </div>
-                                ))}
+                            <div>
+                                <button className={post.reacts.find(react => react.email === userRef.email) ? 'like-btn active' : 'like-btn'} onClick={() => addReact(post.id)}><i className="fas fa-thumbs-up"></i></button>
                             </div>
                         </div>
-                    ))}
-                {/* <div className='post-box'>
-                    <div>
-                        <button className='user-box' onClick={viewPuplisherProfile}>
-                            <img className='user-post-img' alt={ user ? `${user.firstname} ${user.lastname}'s profile` : 'profile'} src={ user && user.profile ? user.profile : profileImg}/>
-                            <h3>{user ? `${user.firstname} ${user.lastname}` : 'user\'s name'}</h3>
-                        </button>
-                        <button className='cross-btn'><i className="fas fa-times"></i></button>
+                        <div className = 'comments-box'>
+                            {post.comments.map((comment) => (
+                                <div key={comment.id} className='comment-box'>
+                                    <div className='div'>
+                                        <button className='user-box' onClick={() => viewPuplisherProfile(comment.owner.email, comment.owner.firstname, comment.owner.lastname, comment.owner.profile)}>
+                                            <img className='user-post-img' alt={ comment ? `${comment.owner.firstname} ${comment.owner.lastname}'s profile` : 'profile'} src={ (comment && comment.owner && comment.owner.profile) ? comment.owner.profile : profileImg}/>
+                                            <h3>{(comment && comment.owner) ? `${comment.owner.firstname} ${comment.owner.lastname}` : 'user\'s name'}</h3>
+                                        </button>
+                                        {comment.owner.email === userRef?.email && (
+                                            <button className='cross-comment-btn' onClick={() => deleteComment(comment.id)}>
+                                                <i className="fas fa-times"></i>
+                                            </button>
+                                        )}
+                                    </div>
+                                    <p>{(comment && comment.content) ? `${comment.content}` : ``}</p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                    <p>The evolution of technology has reshaped nearly every aspect of our lives, from how we communicate to how we work, learn, and entertain ourselves. The constant advancements in digital tools have made information and services more accessible, bridging gaps that once seemed insurmountable. Innovations like artificial intelligence, cloud computing, and mobile technology have redefined business models, enabling companies to reach global audiences and offer highly personalized experiences. However, with these benefits come challenges, including data privacy concerns and the need for digital literacy. As technology continues to evolve, it presents both opportunities and responsibilities, urging society to adopt these tools thoughtfully and ethically for a better future.</p>
-                    <img className='post-img' alt={ user ? `${user.firstname} ${user.lastname}'s profile` : 'profile'} src={ user && user.profile ? user.profile : profileImg}/>
-                </div>
-                <div className='post-box'>
-                    <div>
-                        <button className='user-box' onClick={viewPuplisherProfile}>
-                            <img className='user-post-img' alt={ user ? `${user.firstname} ${user.lastname}'s profile` : 'profile'} src={ user && user.profile ? user.profile : profileImg}/>
-                            <h3>{user ? `${user.firstname} ${user.lastname}` : 'user\'s name'}</h3>
-                        </button>
-                        <button className='cross-btn'><i className="fas fa-times"></i></button>
-                    </div>
-                    <p>The evolution of technology has reshaped nearly every aspect of our lives, from how we communicate to how we work, learn, and entertain ourselves. The constant advancements in digital tools have made information and services more accessible, bridging gaps that once seemed insurmountable. Innovations like artificial intelligence, cloud computing, and mobile technology have redefined business models, enabling companies to reach global audiences and offer highly personalized experiences. However, with these benefits come challenges, including data privacy concerns and the need for digital literacy. As technology continues to evolve, it presents both opportunities and responsibilities, urging society to adopt these tools thoughtfully and ethically for a better future.</p>
-                    <img className='post-img' alt={ user ? `${user.firstname} ${user.lastname}'s profile` : 'profile'} src={ user && user.profile ? user.profile : profileImg}/>
-                </div> */}
+                ))}
             </div>
         </section>
     </>

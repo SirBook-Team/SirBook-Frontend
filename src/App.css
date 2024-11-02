@@ -788,44 +788,26 @@ aside nav button span{
   background-color: var(--dark-red);
 }
 
-
-
-
-/* .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.bage form .radio-div{
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  background-color: var(--bage-bg-color);
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.bage form .radio-div div{
+  display: flex;
+  flex-direction: row;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  width: 50%;
 }
 
-.App-link {
-  color: #61dafb;
+.bage form .radio-div div input[type="radio"]{
+  width: 30px;
+  margin: 0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} */
+

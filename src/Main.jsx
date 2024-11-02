@@ -88,35 +88,8 @@ const Main = () => {
         getPosts();
     }, [isLoggedIn, postsApi, setPosts, error]);
 
-    const viewPuplisherProfile = async (userEmail, firstname, lastname, image) => {
-        // const token = localStorage.getItem('token');
-        // const viewProfileApi = `https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/users/${userEmail}`;
-        // try{
-        //     const response = await fetch(viewProfileApi,{
-        //         method:"GET",
-        //         headers:{
-        //             // "Content-Type":"application/json",
-        //             'Authorization': `Bearer ${token}`,
-        //         },
-        //     });
-        //     console.log(response);
-        //     if(response.ok){
-        //         localStorage.setItem('userEmail', `${userEmail}`);
-        //         navigate(`/profile/${firstname}${lastname}`);
-        //     }
-        //     else{
-        //         alert('error');
-        //     }
-        // }
-        // catch(error){
-        //     console.error('Error: ', error);
-        //     alert('Server Error');
-        // }
-        localStorage.setItem('userEmail', `${userEmail}`);
-        localStorage.setItem('fname', `${firstname}`);
-        localStorage.setItem('lname', `${lastname}`);
-        localStorage.setItem('image', `${image}`);
-        navigate(`/profile/${firstname}${lastname}`);
+    const viewPuplisherProfile = async (userId) => {
+        navigate(`/profile/${userId}`);
     };
 
     const deletePost = async (postId) => {
@@ -230,7 +203,7 @@ const Main = () => {
                 {posts.map((post) => (
                         <div key={post.id} className="post-box">
                             <div className='div'> 
-                                <button className='user-box' onClick={() => viewPuplisherProfile(post.owner.email, post.owner.firstname, post.owner.lastname, post.owner.profile)}>
+                                <button className='user-box' onClick={() => viewPuplisherProfile(post.owner.id)}>
                                     <img className='user-post-img' alt={ post ? `${post.owner.firstname} ${post.owner.lastname}'s profile` : 'profile'} src={ (post && post.owner && post.owner.profile) ? post.owner.profile : profileImg}/>
                                     <h3>{(post && post.owner) ? `${post.owner.firstname} ${post.owner.lastname}` : 'user\'s name'}</h3>
                                 </button>
