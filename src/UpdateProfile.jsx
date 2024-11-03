@@ -2,11 +2,12 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useState, useContext, useEffect } from 'react';
 import { LoginContext } from './LoginContext';
-// import { SidebarContext } from './SidebarContext';
+import { SidebarContext } from './SidebarContext';
 
 
 const UpdateProfile = () => {
-
+    
+  const apiUrl = process.env.REACT_APP_API_URL;
   const [firstname, setFirstName] = useState('');
   const [lastname, setLastName] = useState('');
   const [email] = useState('');
@@ -14,17 +15,16 @@ const UpdateProfile = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isLoggedIn, setIsLoggedIn]= useContext(LoginContext);
   const [profile, setProfile] = useState(null);
-  // const [isSidebarActive, setIsSidebarActive] = useContext(SidebarContext);
+  const [isSidebarActive, setIsSidebarActive] = useContext(SidebarContext);
 
-  const [updateApi] = useState('https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/users/profile');
-  const [checkTokenApi] = useState('https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/auth');
+  const [updateApi] = useState(`${apiUrl}/api/users/profile`);
+  const [checkTokenApi] = useState(`${apiUrl}/api/auth`);
   const navigate = useNavigate();
 
   useEffect(() => {
     const checkToken = async () => {
         if (isLoggedIn) {
             const token = localStorage.getItem('token');
-            console.log(token);
             try {
                 const response = await fetch(checkTokenApi, {
                     method: 'GET',
@@ -62,7 +62,6 @@ const UpdateProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    console.log(firstname, lastname, email, dateOfBirth, phoneNumber, profile);
     formData.append('firstname', firstname);
     formData.append('lastname', lastname);
     formData.append('email', email);
@@ -70,7 +69,6 @@ const UpdateProfile = () => {
     formData.append('phoneNumber', phoneNumber);
     if (profile) formData.append('profile', profile);
     const token = localStorage.getItem('token');
-    console.log(token);
     try{
         const response = await fetch(updateApi,{
             method:"POST",
@@ -79,25 +77,22 @@ const UpdateProfile = () => {
             },
             body: formData,
         });
-        console.log(response);
         if(response.ok){
             navigate('/profile');
         }
         else{
-            console.log(1);
-            alert(await response.text());
+            console.error(await response.text());
         }
     }
     catch(error){
-        console.log(2);
         console.error('Error: ', error);
-        alert('Server Error');
+        console.error('Server Error');
     }
   };
 
   return (
     <>
-        <section className="bage-body">
+        <section className={isSidebarActive ? ((isLoggedIn) ? `bage-body active` : `bage active`) : ((isLoggedIn) ? `bage-body` : `bage`)}>
             <form method="post" onSubmit={handleSubmit}>
                 <h2>Update Profile</h2>
                 <label htmlFor="firstname">update  your lastname:</label>

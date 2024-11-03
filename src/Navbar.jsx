@@ -6,6 +6,7 @@ import { LoginContext } from './LoginContext';
 import { SidebarContext } from './SidebarContext';
 
 const Navbar = () => {
+  const apiUrl = process.env.REACT_APP_API_URL;
   const [isLoggedIn, setIsLoggedIn] = useContext(LoginContext);
   const [isSidebarActive, setIsSidebarActive] = useContext(SidebarContext);
   const navigate = useNavigate();
@@ -16,12 +17,29 @@ const Navbar = () => {
   };
 
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setIsLoggedIn(false);
-    setIsSidebarActive(false);
-    navigate('/login');
-  };
+  const handleLogout = async () => {
+    const token = localStorage.getItem('token');
+    const getUserApi = `${apiUrl}/api/auth/logout`;
+    try {
+        const response = await fetch(getUserApi, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, 
+            },
+        });
+        if (response.ok) {
+            localStorage.removeItem('token');
+            setIsLoggedIn(false);
+            setIsSidebarActive(false);
+            navigate('/login');
+        } else {
+            console.error('Error in logout');
+        }
+    } catch (error) {
+        console.error('Error fetching logout:', error);
+    }
+};
 
 
 

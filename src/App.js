@@ -1,7 +1,7 @@
 // import logo from './sir_light3.svg';
 import React from 'react';
 // import {useState} from 'react';
-import { BrowserRouter, Routes, Route} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Login from './Login';
 import Register from './Register';
@@ -13,6 +13,7 @@ import Profile from './Profile';
 import UpdateProfile from './UpdateProfile';
 import Main from './Main';
 import UserProfile from './UserProfile';
+import Notfound from './Notfound';
 
 import './Reset.css';
 import './App.css';
@@ -35,6 +36,8 @@ function App() {
               <Route path='/profile' element={<Profile/>}/>
               <Route path='/profile/:userId' element={<UserProfile/>}/>
               <Route path='/profile/Update' element={<UpdateProfile/>}/>
+              <Route path='/notfound' element={<Notfound/>}/>
+              <Route path="*" element={<Navigate to="/notfound" replace />} />
             </Routes>
           </BrowserRouter>
         </SidebarProvider>

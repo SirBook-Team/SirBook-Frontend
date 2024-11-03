@@ -5,27 +5,26 @@ import profileImg from './images/profile.png';
 import { LoginContext } from './LoginContext';
 import { SidebarContext } from './SidebarContext';
 const Profile = () => {
+    const apiUrl = process.env.REACT_APP_API_URL;
     const [isLoggedIn, setIsLoggedIn]= useContext(LoginContext);
     const [isSidebarActive] = useContext(SidebarContext);
-    const [createPostApi] = useState('https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/posts');
-    const [checkTokenApi] = useState('https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/auth');
+    const [createPostApi] = useState(`${apiUrl}/api/posts`);
+    const [checkTokenApi] = useState(`${apiUrl}/api/auth`);
     const navigate = useNavigate();
     var user = null;
     const [content, setContent] = useState('');
     const [userRef, setUserRef] = useState([]);
     const [comment, setComment] = useState('');
-    const [firstname, setFirstName] = useState('');
-    const [lastname, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [dateOfBirth, setDateOfBirth] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
     const [image, setImage] = useState(null);
     const [posts, setPosts] = useState([]);
-    const [profile, setProfile] = useState('');
+    const [reacts, setReacts] = useState({});
+    const [reactsCount, setReactsCount] = useState({});
+    const [isReacting, setIsReacting] = useState({});
+
 
     const getPosts = async (userEmail) => {
         const token = localStorage.getItem('token');
-        const postsApi = `https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/posts/${userEmail}`;
+        const postsApi = `${apiUrl}/api/posts/${userEmail}`;
         try {
             const response = await fetch(postsApi, {
                 method: 'GET',
@@ -38,7 +37,7 @@ const Profile = () => {
                 const data = await response.json();
                 setPosts(data);
             } else {
-                alert('Error in fetching posts');
+                console.error('Error in fetching posts');
             }
         } catch (error) {
             console.error('Error fetching posts:', error);
@@ -61,12 +60,6 @@ const Profile = () => {
                         const data = await response.json();
                         user = data;
                         setUserRef(user);
-                        setDateOfBirth(user.dateOfBirth);
-                        setEmail(user.email);
-                        setFirstName(user.firstname);
-                        setLastName(user.lastname);
-                        setPhoneNumber(user.phoneNumber);
-                        setProfile(user.profile);
                     } else {
                         setIsLoggedIn(false);
                         localStorage.removeItem('token');
@@ -111,12 +104,12 @@ const Profile = () => {
                 window.location.reload();
             }
             else{
-                alert('error');
+                console.error('error');
             }
         }
         catch(error){
             console.error('Error: ', error);
-            alert('Server Error');
+            console.error('Server Error');
         }
     };
 
@@ -126,10 +119,8 @@ const Profile = () => {
 
 
     const deletePost = async (postId) => {
-        console.log(postId);
         const token = localStorage.getItem('token');
-        const deletePostApi = `https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/posts/delete/${postId}`;
-        console.log(deletePostApi);
+        const deletePostApi = `${apiUrl}/api/posts/delete/${postId}`;
         try{
             const response = await fetch(deletePostApi,{
                 method:"POST",
@@ -141,19 +132,18 @@ const Profile = () => {
                 window.location.reload();
             }
             else{
-                alert('error in delete post');
+                console.error('error in delete post');
             }
         }
         catch(error){
             console.error('Error: ', error);
-            alert('Server Error');
+            console.error('Server Error');
         }
     };
 
     const createComment = async (postId) => {
-        console.log(postId);
         const token = localStorage.getItem('token');
-        const createCommentApi = `https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/posts/comment/${postId}`;
+        const createCommentApi = `${apiUrl}/api/posts/comment/${postId}`;
         try{
             const response = await fetch(createCommentApi,{
                 method:"POST",
@@ -167,19 +157,18 @@ const Profile = () => {
                 window.location.reload();
             }
             else{
-                alert('error in delete post');
+                console.error('error in delete post');
             }
         }
         catch(error){
             console.error('Error: ', error);
-            alert('Server Error');
+            console.error('Server Error');
         }
     };
 
     const deleteComment = async (commentId) => {
-        console.log(commentId);
         const token = localStorage.getItem('token');
-        const deleteCommentApi = `https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/posts/comment/delete/${commentId}`;
+        const deleteCommentApi = `${apiUrl}/api/posts/comment/delete/${commentId}`;
         try{
             const response = await fetch(deleteCommentApi,{
                 method:"POST",
@@ -191,38 +180,69 @@ const Profile = () => {
                 window.location.reload();
             }
             else{
-                alert('error in delete post');
+                console.error('error in delete post');
             }
         }
         catch(error){
             console.error('Error: ', error);
-            alert('Server Error');
+            console.error('Server Error');
         }
     };
 
-    const addReact = async (postId) => {
-        console.log(postId);
+    const addReact = async (post) => {
         const token = localStorage.getItem('token');
-        const addReactApi = `https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/posts/react/${postId}`;
-        try{
-            const response = await fetch(addReactApi,{
-                method:"POST",
-                headers:{
+        const addReactApi = `${apiUrl}/api/posts/react/${post.id}`;
+    
+        if (isReacting[post.id]) return;
+
+        setIsReacting(prev => ({ ...prev, [post.id]: true }));
+
+        try {
+            const response = await fetch(addReactApi, {
+                method: "POST",
+                headers: {
                     'Authorization': `Bearer ${token}`,
                 },
             });
-            if(response.ok){
-                window.location.reload();
+            
+            if (response.ok) {
+                if (reacts[post.id]) {
+                    setReacts(prevReacts => ({
+                        ...prevReacts,  
+                        [post.id]: false  
+                    }));
+                    reactsCount[post.id] -= 1;
+                } else {
+                    setReacts(prevReacts => ({
+                        ...prevReacts,  
+                        [post.id]: true  
+                    }));
+                    reactsCount[post.id] += 1;
+                }
+            } else {
+                console.error('error in add react');
             }
-            else{
-                alert('error in delete post');
-            }
-        }
-        catch(error){
+        } catch (error) {
             console.error('Error: ', error);
-            alert('Server Error');
-        };
+            console.error('Server Error');
+        } finally {
+            setIsReacting(prev => ({ ...prev, [post.id]: false }));
+        }
     };
+
+    useEffect(() => {
+        posts.forEach(post => {
+            const userReacted = post.reacts.find(react => react.email === userRef.email);
+            setReacts(prevReacts => ({
+                ...prevReacts,
+                [post.id]: !!userReacted 
+            }));
+            setReactsCount(prevReacts => ({
+                ...prevReacts,
+                [post.id]: post.reacts.length
+            }));
+        });
+    }, [posts, userRef.email, userRef.id]);
 
   return (
     <>
@@ -231,31 +251,31 @@ const Profile = () => {
                 <div className='flex-container left'>
                     <div className='profile-container'>
                         <div className="main-box">
-                            <img className='image' alt={ user ? `${firstname} ${lastname}'s profile` : 'profile'} src={ profile ? profile : profileImg}/>
+                            <img className='image' alt={ userRef ? `${userRef.firstname} ${userRef.lastname}'s profile` : 'profile'} src={ userRef && userRef.profile ? userRef.profile : profileImg}/>
                         </div>
                     </div>
-                    <h2>{user ? `${user.firstname} ${user.lastname}` : 'user\'s name'}</h2>
+                    <h2>{userRef ? `${userRef.firstname} ${userRef.lastname}` : 'user\'s name'}</h2>
                 </div>
                 <div className='flex-container right'>
                     <div className='flex-field'>
                         <label className='view-label' htmlFor="firstname">firstname</label>
-                        <input type="text" name="firstname" value={firstname} required readOnly/>
+                        <input type="text" name="firstname" value={userRef.firstname || ''} required readOnly/>
                     </div>
                     <div className='flex-field'>
                         <label className='view-label' htmlFor="lastname">lastname</label>
-                        <input type="text" name="lastname" value={lastname} required readOnly/>
+                        <input type="text" name="lastname" value={userRef.lastname || ''} required readOnly/>
                     </div>
                     <div className='flex-field'>
                         <label className='view-label' htmlFor="email">email</label>
-                        <input type="email" name="email" value={email} required readOnly/>
+                        <input type="email" name="email" value={userRef.email || ''} required readOnly/>
                     </div>
                     <div className='flex-field'>
                         <label className='view-label' htmlFor="dateOfBirth">birth date</label>
-                        <input type="date" name="dateOfBirth" value={dateOfBirth} required readOnly/>
+                        <input type="date" name="dateOfBirth" value={userRef.dateOfBirth || ''} required readOnly/>
                     </div>
                     <div className='flex-field'>
                         <label className='view-label' htmlFor="phoneNumber">phone number</label>
-                        <input type="number" name="phoneNumber" value={phoneNumber} required readOnly/>
+                        <input type="number" name="phoneNumber" value={userRef.phoneNumber || ''} required readOnly/>
                     </div>
                     <div>
                         <Link className='update-btn' to="/profile/update">update profile</Link>
@@ -272,50 +292,50 @@ const Profile = () => {
             </form>
             <div className='posts-box'>
                 {posts.map((post) => (
-                    <div key={post.id} className="post-box">
-                        <div className='div'> 
-                            <button className='user-box' onClick={() => viewPuplisherProfile(post.owner.id)}>
-                                <img className='user-post-img' alt={ post ? `${post.owner.firstname} ${post.owner.lastname}'s profile` : 'profile'} src={ (post && post.owner && post.owner.profile) ? post.owner.profile : profileImg}/>
-                                <h3>{(post && post.owner) ? `${post.owner.firstname} ${post.owner.lastname}` : 'user\'s name'}</h3>
-                            </button>
-                            {post.owner.email === userRef?.email && (
-                                <button className='cross-btn' onClick={() => deletePost(post.id)}><i className="fas fa-times"></i></button>
-                            )}
-                        </div>
-                        <p>{(post && post.content) ? `${post.content}` : ``}</p>
-                        {(post && post.image) && <img className='post-img' alt={ post ? `${post.owner.firstname} ${post.owner.lastname}'s profile` : 'profile'} src={ post.image}/>}
-                        <div className = 'create-comment'>
-                            <textarea placeholder='comment. . .' name="comment" value={comment} onChange={(e) => setComment(e.target.value)} required maxLength='200' rows='2'/>
-                            <button className = 'post-btn' onClick={() => createComment(post.id)}>Post</button>
-                        </div>
-                        <div className='view-likes'>
-                            <div>
-                                <span>{post.reacts.length}</span>
+                        <div key={post.id} className="post-box">
+                            <div className='div'> 
+                                <button className='user-box' onClick={() => viewPuplisherProfile(post.owner.id)}>
+                                    <img className='user-post-img' alt={ post ? `${post.owner.firstname} ${post.owner.lastname}'s profile` : 'profile'} src={ (post && post.owner && post.owner.profile) ? post.owner.profile : profileImg}/>
+                                    <h3>{(post && post.owner) ? `${post.owner.firstname} ${post.owner.lastname}` : 'user\'s name'}</h3>
+                                </button>
+                                {post.owner.email === userRef?.email && (
+                                    <button className='cross-btn' onClick={() => deletePost(post.id)}><i className="fas fa-times"></i></button>
+                                )}
                             </div>
-                            <div>
-                                <button className={post.reacts.find(react => react.email === userRef.email) ? 'like-btn active' : 'like-btn'} onClick={() => addReact(post.id)}><i className="fas fa-thumbs-up"></i></button>
-                            </div>
-                        </div>
-                        <div className = 'comments-box'>
-                            {post.comments.map((comment) => (
-                                <div key={comment.id} className='comment-box'>
-                                    <div className='div'>
-                                        <button className='user-box' onClick={() => viewPuplisherProfile(comment.owner.email, comment.owner.firstname, comment.owner.lastname, comment.owner.profile)}>
-                                            <img className='user-post-img' alt={ comment ? `${comment.owner.firstname} ${comment.owner.lastname}'s profile` : 'profile'} src={ (comment && comment.owner && comment.owner.profile) ? comment.owner.profile : profileImg}/>
-                                            <h3>{(comment && comment.owner) ? `${comment.owner.firstname} ${comment.owner.lastname}` : 'user\'s name'}</h3>
-                                        </button>
-                                        {comment.owner.email === userRef?.email && (
-                                            <button className='cross-comment-btn' onClick={() => deleteComment(comment.id)}>
-                                                <i className="fas fa-times"></i>
-                                            </button>
-                                        )}
-                                    </div>
-                                    <p>{(comment && comment.content) ? `${comment.content}` : ``}</p>
+                            <p>{(post && post.content) ? `${post.content}` : ``}</p>
+                            {(post && post.image) && <img className='post-img' alt={ post ? `${post.owner.firstname} ${post.owner.lastname}'s profile` : 'profile'} src={ post.image}/>}
+                            <div className='view-likes'>
+                                <div>
+                                    <span>{reactsCount[post.id]}</span>
                                 </div>
-                            ))}
+                                <div>
+                                    <button className={ reacts[post.id] ? 'like-btn active' : 'like-btn'} onClick={ async () => await addReact(post)} disabled={isReacting[post.id]}><i className="fas fa-thumbs-up"></i></button>
+                                </div>
+                            </div>
+                            <div className = 'create-comment'>
+                                <textarea placeholder='comment. . .' name="comment" value={comment} onChange={(e) => setComment(e.target.value)} required maxLength='200' rows='2'/>
+                                <button className = 'post-btn' onClick={() => createComment(post.id)}>Post</button>
+                            </div>
+                            <div className = 'comments-box'>
+                                {post.comments.map((comment) => (
+                                    <div key={comment.id} className='comment-box'>
+                                        <div className='div'>
+                                            <button className='user-box' onClick={() => viewPuplisherProfile(comment.owner.id)}>
+                                                <img className='user-post-img' alt={ comment ? `${comment.owner.firstname} ${comment.owner.lastname}'s profile` : 'profile'} src={ (comment && comment.owner && comment.owner.profile) ? comment.owner.profile : profileImg}/>
+                                                <h3>{(comment && comment.owner) ? `${comment.owner.firstname} ${comment.owner.lastname}` : 'user\'s name'}</h3>
+                                            </button>
+                                            {comment.owner.email === userRef?.email && (
+                                                <button className='cross-comment-btn' onClick={() => deleteComment(comment.id)}>
+                                                    <i className="fas fa-times"></i>
+                                                </button>
+                                            )}
+                                        </div>
+                                        <p>{(comment && comment.content) ? `${comment.content}` : ``}</p>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
             </div>
         </section>
     </>

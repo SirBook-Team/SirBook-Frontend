@@ -10,17 +10,21 @@ import { SidebarContext } from './SidebarContext';
 
 
 const Main = () => {
-
+    
+    const apiUrl = process.env.REACT_APP_API_URL;
     const [posts, setPosts] = useState([]);
     const [error, ] = useState(null);
     const [userRef, setUserRef] = useState([]);
     const [comment, setComment] = useState('');
-    const [postsApi, ] = useState('https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/posts');
+    const [postsApi, ] = useState(`${apiUrl}/api/posts`);
     const [isLoggedIn, setIsLoggedIn]= useContext(LoginContext);
     const [isSidebarActive, ] = useContext(SidebarContext);
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
-    const [checkTokenApi] = useState('https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/auth');
+    const [checkTokenApi] = useState(`${apiUrl}/api/auth`);
+    const [reacts, setReacts] = useState({});
+    const [reactsCount, setReactsCount] = useState({});
+    const [isReacting, setIsReacting] = useState({});
 
 
     useEffect(() => {
@@ -32,14 +36,11 @@ const Main = () => {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`, // send token as part of headers
+                            'Authorization': `Bearer ${token}`, 
                         },
-                        // body: JSON.stringify({ token }),
                     });
-
                     if (response.ok) {
                         const data = await response.json();
-                        console.log(data);
                         setUser(data);
                         setUserRef(data);
                     } else {
@@ -75,11 +76,9 @@ const Main = () => {
 
                 if (response.ok) {
                     const data = await response.json();
-                    console.log(data);
                     setPosts(data);
                 } else {
-                    // console.error('response not ok:', error);
-                    alert('error in fetching posts');
+                    console.error('error in fetching posts');
                 }
             } catch (error) {
                 console.error('Error fetching posts:', error);
@@ -93,10 +92,8 @@ const Main = () => {
     };
 
     const deletePost = async (postId) => {
-        console.log(postId);
         const token = localStorage.getItem('token');
-        const deletePostApi = `https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/posts/delete/${postId}`;
-        console.log(deletePostApi);
+        const deletePostApi = `${apiUrl}/api/posts/delete/${postId}`;
         try{
             const response = await fetch(deletePostApi,{
                 method:"POST",
@@ -104,24 +101,22 @@ const Main = () => {
                     'Authorization': `Bearer ${token}`,
                 },
             });
-            console.log(response);
             if(response.ok){
                 window.location.reload();
             }
             else{
-                alert('error in delete post');
+                console.error('error in delete post');
             }
         }
         catch(error){
             console.error('Error: ', error);
-            alert('Server Error');
+            console.error('Server Error');
         }
     };
 
     const createComment = async (postId) => {
-        console.log(postId);
         const token = localStorage.getItem('token');
-        const createCommentApi = `https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/posts/comment/${postId}`;
+        const createCommentApi = `${apiUrl}/api/posts/comment/${postId}`;
         try{
             const response = await fetch(createCommentApi,{
                 method:"POST",
@@ -131,24 +126,22 @@ const Main = () => {
                 },
                 body: JSON.stringify({ content: comment }),
             });
-            console.log(response);
             if(response.ok){
                 window.location.reload();
             }
             else{
-                alert('error in delete post');
+                console.error('error in delete post');
             }
         }
         catch(error){
             console.error('Error: ', error);
-            alert('Server Error');
+            console.error('Server Error');
         }
     };
 
     const deleteComment = async (commentId) => {
-        console.log(commentId);
         const token = localStorage.getItem('token');
-        const deleteCommentApi = `https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/posts/comment/delete/${commentId}`;
+        const deleteCommentApi = `${apiUrl}/api/posts/comment/delete/${commentId}`;
         try{
             const response = await fetch(deleteCommentApi,{
                 method:"POST",
@@ -156,49 +149,78 @@ const Main = () => {
                     'Authorization': `Bearer ${token}`,
                 },
             });
-            console.log(response);
             if(response.ok){
                 window.location.reload();
             }
             else{
-                alert('error in delete post');
+                console.error('error in delete post');
             }
         }
         catch(error){
             console.error('Error: ', error);
-            alert('Server Error');
+            console.error('Server Error');
         }
     };
 
-    const addReact = async (postId) => {
-        console.log(postId);
+    const addReact = async (post) => {
         const token = localStorage.getItem('token');
-        const addReactApi = `https://ideal-computing-machine-wqqvr4qg96ghvgp7-4000.app.github.dev/api/posts/react/${postId}`;
-        try{
-            const response = await fetch(addReactApi,{
-                method:"POST",
-                headers:{
+        const addReactApi = `${apiUrl}/api/posts/react/${post.id}`;
+    
+        if (isReacting[post.id]) return;
+
+        setIsReacting(prev => ({ ...prev, [post.id]: true }));
+
+        try {
+            const response = await fetch(addReactApi, {
+                method: "POST",
+                headers: {
                     'Authorization': `Bearer ${token}`,
                 },
             });
-            console.log(response);
-            if(response.ok){
-                window.location.reload();
+            
+            if (response.ok) {
+                if (reacts[post.id]) {
+                    setReacts(prevReacts => ({
+                        ...prevReacts,  
+                        [post.id]: false  
+                    }));
+                    reactsCount[post.id] -= 1;
+                } else {
+                    setReacts(prevReacts => ({
+                        ...prevReacts,  
+                        [post.id]: true  
+                    }));
+                    reactsCount[post.id] += 1;
+                }
+            } else {
+                console.error('error in add react');
             }
-            else{
-                alert('error in delete post');
-            }
-        }
-        catch(error){
+        } catch (error) {
             console.error('Error: ', error);
-            alert('Server Error');
-        };
+            console.error('Server Error');
+        } finally {
+            setIsReacting(prev => ({ ...prev, [post.id]: false }));
+        }
     };
+
+    useEffect(() => {
+        posts.forEach(post => {
+            const userReacted = post.reacts.find(react => react.email === userRef.email);
+            setReacts(prevReacts => ({
+                ...prevReacts,
+                [post.id]: !!userReacted 
+            }));
+            setReactsCount(prevReacts => ({
+                ...prevReacts,
+                [post.id]: post.reacts.length
+            }));
+        });
+    }, [posts, userRef.email, userRef.id]);
 
 
   return (
     <>
-        <section className={isSidebarActive ? 'bage-body active' : 'bage-body'}>
+        <section className={isSidebarActive ? ((isLoggedIn) ? `bage-body active` : `bage active`) : ((isLoggedIn) ? `bage-body` : `bage`)}>
         <div className='posts-box'>
                 {posts.map((post) => (
                         <div key={post.id} className="post-box">
@@ -213,26 +235,23 @@ const Main = () => {
                             </div>
                             <p>{(post && post.content) ? `${post.content}` : ``}</p>
                             {(post && post.image) && <img className='post-img' alt={ post ? `${post.owner.firstname} ${post.owner.lastname}'s profile` : 'profile'} src={ post.image}/>}
+                            <div className='view-likes'>
+                                <div>
+                                    <span>{reactsCount[post.id]}</span>
+                                </div>
+                                <div>
+                                    <button className={ reacts[post.id] ? 'like-btn active' : 'like-btn'} onClick={ async () => await addReact(post)} disabled={isReacting[post.id]}><i className="fas fa-thumbs-up"></i></button>
+                                </div>
+                            </div>
                             <div className = 'create-comment'>
                                 <textarea placeholder='comment. . .' name="comment" value={comment} onChange={(e) => setComment(e.target.value)} required maxLength='200' rows='2'/>
                                 <button className = 'post-btn' onClick={() => createComment(post.id)}>Post</button>
                             </div>
-                            <div className='view-likes'>
-                                <div>
-                                    <span>{post.reacts.length}</span>
-                                </div>
-                                <div>
-                                    <button className={post.reacts.find(react => react.email === userRef.email) ? 'like-btn active' : 'like-btn'} onClick={() => addReact(post.id)}><i className="fas fa-thumbs-up"></i></button>
-                                </div>
-                                {/* <button className='like-btn'><i className="fas fa-thumbs-down"></i></button>
-                                <button className='like-btn'><i className="fas fa-heart"></i></button> */}
-                            </div>
                             <div className = 'comments-box'>
                                 {post.comments.map((comment) => (
                                     <div key={comment.id} className='comment-box'>
-                                        {/* <hr/> */}
                                         <div className='div'>
-                                            <button className='user-box' onClick={() => viewPuplisherProfile(comment.owner.email, comment.owner.firstname, comment.owner.lastname, comment.owner.profile)}>
+                                            <button className='user-box' onClick={() => viewPuplisherProfile(comment.owner.id)}>
                                                 <img className='user-post-img' alt={ comment ? `${comment.owner.firstname} ${comment.owner.lastname}'s profile` : 'profile'} src={ (comment && comment.owner && comment.owner.profile) ? comment.owner.profile : profileImg}/>
                                                 <h3>{(comment && comment.owner) ? `${comment.owner.firstname} ${comment.owner.lastname}` : 'user\'s name'}</h3>
                                             </button>
@@ -243,7 +262,6 @@ const Main = () => {
                                             )}
                                         </div>
                                         <p>{(comment && comment.content) ? `${comment.content}` : ``}</p>
-                                        {/* <hr/> */}
                                     </div>
                                 ))}
                             </div>
