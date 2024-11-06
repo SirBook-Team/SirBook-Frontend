@@ -34,7 +34,7 @@ const Register = () => {
             });
             if(response.ok){
                 setIsSidebarActive(false);
-                navigate('/login');
+                navigate('/');
             }
             else{
                 console.error(await response.text());
@@ -78,7 +78,7 @@ const Register = () => {
                 <input type="submit" value="Register"/>
                 <div>
                     <p>already have an account? </p>
-                    <Link to="/login">Login!</Link>
+                    <Link to="/">Login!</Link>
                 </div>
             </form>
         </section>

@@ -46,17 +46,17 @@ const Main = () => {
                     } else {
                         setIsLoggedIn(false);
                         localStorage.removeItem('token');
-                        navigate('/login');
+                        navigate('/');
                     }
                 } catch (error) {
                     console.error('Error verifying token:', error);
                     setIsLoggedIn(false);
                     localStorage.removeItem('token');
-                    navigate('/login');
+                    navigate('/');
                 }
             }
             else{
-                navigate('/login');
+                navigate('/');
             }
         };
         checkToken();
