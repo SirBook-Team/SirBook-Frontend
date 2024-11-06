@@ -7,6 +7,7 @@ import { SidebarContext } from './SidebarContext';
 
 const UpdateProfile = () => {
     
+  // handel variables
   const apiUrl = process.env.REACT_APP_API_URL;
   const [firstname, setFirstName] = useState('');
   const [lastname, setLastName] = useState('');
@@ -21,6 +22,7 @@ const UpdateProfile = () => {
   const [checkTokenApi] = useState(`${apiUrl}/api/auth`);
   const navigate = useNavigate();
 
+  // handel athontication
   useEffect(() => {
     const checkToken = async () => {
         if (isLoggedIn) {
@@ -59,6 +61,7 @@ const UpdateProfile = () => {
     checkToken();
   }, [isLoggedIn, navigate, setIsLoggedIn, checkTokenApi]);
 
+  // handel submet
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();

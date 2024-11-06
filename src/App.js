@@ -27,9 +27,7 @@ function App() {
           <BrowserRouter>
             <Navbar/>
             <Sidebar/>
-            {/* <div className='bage-body'></div> */}
             <Routes>
-              {/* <Route path='/' element={<Home/>}/> */}
               <Route path='/home' element={<Main/>}/>
               <Route path='/' element={<Login/>}/>
               <Route path='/register' element={<Register/>}/>

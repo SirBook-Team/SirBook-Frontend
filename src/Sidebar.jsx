@@ -7,12 +7,14 @@ import { SidebarContext } from './SidebarContext';
 
 const Sidebar = () => {
 
-  const apiUrl = process.env.REACT_APP_API_URL;
+    // handel variables
+    const apiUrl = process.env.REACT_APP_API_URL;
     const [isLoggedIn, setIsLoggedIn] = useContext(LoginContext);
     const [isSidebarActive, setIsSidebarActive] = useContext(SidebarContext);
     const navigate = useNavigate();
 
 
+    // handel logout
     const handleLogout = async () => {
     const token = localStorage.getItem('token');
     const getUserApi = `${apiUrl}/api/auth/logout`;

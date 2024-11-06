@@ -5,6 +5,7 @@ import { useContext } from 'react';
 
 const Notfound = () => {
 
+    // handel variables
     const [isSidebarActive] = useContext(SidebarContext);
     const [isLoggedIn] = useContext(LoginContext);
 

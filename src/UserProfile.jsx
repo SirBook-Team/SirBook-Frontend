@@ -7,6 +7,8 @@ import { SidebarContext } from './SidebarContext';
 import Notfound from './Notfound';
 
 const UserProfile = () => {
+
+    // handel variables
     const apiUrl = process.env.REACT_APP_API_URL;
     const [isLoggedIn, setIsLoggedIn] = useContext(LoginContext);
     const [isSidebarActive] = useContext(SidebarContext);
@@ -23,6 +25,7 @@ const UserProfile = () => {
     const [reactsCount, setReactsCount] = useState({});
     const [isReacting, setIsReacting] = useState({});
 
+    // handel get user posts
     const getPosts = async (userEmail) => {
         const token = localStorage.getItem('token');
         const postsApi = `${apiUrl}/api/posts/${userEmail}`;
@@ -46,6 +49,7 @@ const UserProfile = () => {
         }
     };
 
+    // handel get user
     const getUser = async () => {
         const token = localStorage.getItem('token');
         const getUserApi = `${apiUrl}/api/users/${userId}`;
@@ -75,6 +79,7 @@ const UserProfile = () => {
         }
     };
 
+    // handel athontication
     useEffect(() => {
         const checkToken = async () => {
             if (isLoggedIn) {
@@ -115,6 +120,7 @@ const UserProfile = () => {
         }
     }, [otherUserRef]);
 
+    // handel delete post
     const deletePost = async (postId) => {
         const token = localStorage.getItem('token');
         const deletePostApi = `${apiUrl}/api/posts/delete/${postId}`;
@@ -135,6 +141,7 @@ const UserProfile = () => {
         }
     };
 
+    // handel create new comment
     const createComment = async (postId) => {
         const token = localStorage.getItem('token');
         const createCommentApi = `${apiUrl}/api/posts/comment/${postId}`;
@@ -158,6 +165,7 @@ const UserProfile = () => {
         }
     };
 
+    // handel delete comment
     const deleteComment = async (commentId) => {
         const token = localStorage.getItem('token');
         const deleteCommentApi = `${apiUrl}/api/posts/comment/delete/${commentId}`;
@@ -178,6 +186,7 @@ const UserProfile = () => {
         }
     };
 
+    // handel add react to a post
     const addReact = async (post) => {
         const token = localStorage.getItem('token');
         const addReactApi = `${apiUrl}/api/posts/react/${post.id}`;
@@ -213,10 +222,12 @@ const UserProfile = () => {
         }
     };
 
+    // handel going to user profile
     const viewPuplisherProfile = (userId) => {
         navigate(`/profile/${userId}`);
     }
 
+    // handel react putton color by user react
     useEffect(() => {
         posts.forEach(post => {
             const userReacted = post.reacts.find(react => react.email === userRef?.email);

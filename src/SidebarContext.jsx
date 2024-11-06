@@ -4,6 +4,8 @@ import { createContext, useState } from 'react';
 export const SidebarContext = createContext();
 
 export const SidebarProvider = ({ children }) => {
+
+    // handel variables
     const [isSidebarActive, setIsSidebarActive] = useState(false);
     return (
         <>

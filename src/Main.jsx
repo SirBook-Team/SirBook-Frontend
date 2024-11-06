@@ -11,6 +11,7 @@ import { SidebarContext } from './SidebarContext';
 
 const Main = () => {
     
+    // handel variables
     const apiUrl = process.env.REACT_APP_API_URL;
     const [posts, setPosts] = useState([]);
     const [error, ] = useState(null);
@@ -26,7 +27,7 @@ const Main = () => {
     const [reactsCount, setReactsCount] = useState({});
     const [isReacting, setIsReacting] = useState({});
 
-
+    // handel athontication
     useEffect(() => {
         const checkToken = async () => {
             if (isLoggedIn) {
@@ -62,6 +63,7 @@ const Main = () => {
         checkToken();
     }, [isLoggedIn, navigate, setIsLoggedIn, checkTokenApi]);
 
+    // handel get all posts
     useEffect(() => {
         const getPosts = async () => {
             const token = localStorage.getItem('token');
@@ -87,10 +89,12 @@ const Main = () => {
         getPosts();
     }, [isLoggedIn, postsApi, setPosts, error]);
 
+    // handel going to user profile
     const viewPuplisherProfile = async (userId) => {
         navigate(`/profile/${userId}`);
     };
 
+    // handel delete post
     const deletePost = async (postId) => {
         const token = localStorage.getItem('token');
         const deletePostApi = `${apiUrl}/api/posts/delete/${postId}`;
@@ -114,6 +118,7 @@ const Main = () => {
         }
     };
 
+    // handel create new comment
     const createComment = async (postId) => {
         const token = localStorage.getItem('token');
         const createCommentApi = `${apiUrl}/api/posts/comment/${postId}`;
@@ -139,6 +144,7 @@ const Main = () => {
         }
     };
 
+    // handel delete comment
     const deleteComment = async (commentId) => {
         const token = localStorage.getItem('token');
         const deleteCommentApi = `${apiUrl}/api/posts/comment/delete/${commentId}`;
@@ -162,6 +168,7 @@ const Main = () => {
         }
     };
 
+    // handel add react to a post
     const addReact = async (post) => {
         const token = localStorage.getItem('token');
         const addReactApi = `${apiUrl}/api/posts/react/${post.id}`;
@@ -203,6 +210,7 @@ const Main = () => {
         }
     };
 
+    // handel react putton color by user react
     useEffect(() => {
         posts.forEach(post => {
             const userReacted = post.reacts.find(react => react.email === userRef.email);

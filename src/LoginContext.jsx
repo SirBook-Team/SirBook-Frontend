@@ -4,6 +4,7 @@ import { createContext, useState } from 'react';
 export const LoginContext = createContext();
 
 export const LoginProvider = ({ children }) => {
+    // handel variables
     const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
     const [isSidebarActive, setIsSidebarActive] = useState(false);
     return (

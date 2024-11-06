@@ -6,18 +6,20 @@ import { LoginContext } from './LoginContext';
 import { SidebarContext } from './SidebarContext';
 
 const Navbar = () => {
-  const apiUrl = process.env.REACT_APP_API_URL;
-  const [isLoggedIn, setIsLoggedIn] = useContext(LoginContext);
-  const [isSidebarActive, setIsSidebarActive] = useContext(SidebarContext);
-  const navigate = useNavigate();
 
+    // handel variables
+    const apiUrl = process.env.REACT_APP_API_URL;
+    const [isLoggedIn, setIsLoggedIn] = useContext(LoginContext);
+    const [isSidebarActive, setIsSidebarActive] = useContext(SidebarContext);
+    const navigate = useNavigate();
 
-  const toggleSidebar = () => {
-    setIsSidebarActive((prev) => !prev);
-  };
+    // handel sidebar toggle
+    const toggleSidebar = () => {
+        setIsSidebarActive((prev) => !prev);
+    };
 
-
-  const handleLogout = async () => {
+    // handel logout
+    const handleLogout = async () => {
     const token = localStorage.getItem('token');
     const getUserApi = `${apiUrl}/api/auth/logout`;
     try {
