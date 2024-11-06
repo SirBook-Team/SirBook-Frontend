@@ -52,9 +52,7 @@ REACT_APP_API_URL=<your_API_URL>
 > Note: Remember to replace `<your_API_URL>` with your actual Backend server URL.
 
 4. Run the project:
-\```
-npm start
-\```
+`npm start`
 
 
 ## Usage
