@@ -65,7 +65,7 @@ Once the application is running, you can access it in your browser at http://loc
 ## Production Build
 
 To create a production build, use:
-\```
+\`
 npm run build
-\```
+\`
 This will generate an optimized, production-ready build in the build folder, with minified files and hashed filenames. For more details, see the [Create React App deployment documentation](https://create-react-app.dev/docs/deployment/).
