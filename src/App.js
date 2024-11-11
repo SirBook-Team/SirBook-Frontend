@@ -14,6 +14,7 @@ import UpdateProfile from './UpdateProfile';
 import Main from './Main';
 import UserProfile from './UserProfile';
 import Notfound from './Notfound';
+import Users from './Users';
 
 import './Reset.css';
 import './App.css';
@@ -32,6 +33,7 @@ function App() {
               <Route path='/' element={<Login/>}/>
               <Route path='/register' element={<Register/>}/>
               <Route path='/profile' element={<Profile/>}/>
+              <Route path='/users' element={<Users/>}/>
               <Route path='/profile/:userId' element={<UserProfile/>}/>
               <Route path='/profile/Update' element={<UpdateProfile/>}/>
               <Route path='/notfound' element={<Notfound/>}/>

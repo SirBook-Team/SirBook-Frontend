@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import logo from './sir_light3.svg';
 
 import { LoginContext } from './LoginContext';
@@ -20,28 +20,34 @@ const Navbar = () => {
 
     // handel logout
     const handleLogout = async () => {
-    const token = localStorage.getItem('token');
-    const getUserApi = `${apiUrl}/api/auth/logout`;
-    try {
-        const response = await fetch(getUserApi, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`, 
-            },
-        });
-        if (response.ok) {
-            localStorage.removeItem('token');
-            setIsLoggedIn(false);
-            setIsSidebarActive(false);
-            navigate('/');
-        } else {
-            console.error('Error in logout');
+        const token = localStorage.getItem('token');
+        const getUserApi = `${apiUrl}/api/auth/logout`;
+        try {
+            const response = await fetch(getUserApi, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`, 
+                },
+            });
+            if (response.ok) {
+                localStorage.removeItem('token');
+                setIsLoggedIn(false);
+                setIsSidebarActive(false);
+                navigate('/');
+            } else {
+                console.error('Error in logout');
+            }
+        } catch (error) {
+            console.error('Error fetching logout:', error);
         }
-    } catch (error) {
-        console.error('Error fetching logout:', error);
-    }
-};
+    };
+
+    // handel search
+    const searchUsers = async (e) => {
+        e.preventDefault();
+        
+    };
 
 
 
@@ -54,6 +60,12 @@ const Navbar = () => {
                 <h2>SirBook</h2>
             </Link>
         </div>
+        {/* {location.pathname === '/users' ? (
+            <form className='search-form'>
+                <input type="text" placeholder="Search" />
+                <button type="submit" onClick={searchUsers}><i className="fas fa-search"></i></button>
+            </form>
+        ): null} */}
         <ul>
             {isLoggedIn ? (
             <>

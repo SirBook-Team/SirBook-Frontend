@@ -47,6 +47,7 @@ const Sidebar = () => {
                 <ul>
                     <li><Link to='/home'><i className="fas fa-home"></i><span className="sidebar-links ">Home</span></Link></li>
                     <li><Link to='#'><i className="fas fa-cog"></i><span className="sidebar-links ">Settings</span></Link></li>
+                    <li><Link to='./users'><i className="fas fa-users"></i><span className="sidebar-links ">Users</span></Link></li>
                 </ul>
             </nav>
             <div className="sidebar-footer">

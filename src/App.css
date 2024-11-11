@@ -20,6 +20,10 @@
   --dark-red:#590000;
 }
 
+html, body {
+  height: 100%;
+}
+
 h2{
   font-size: 28px;
   font-weight: 600;
@@ -266,12 +270,14 @@ aside nav button span{
   padding: 30px 100px;
   backdrop-filter: unset;
   min-height: calc(100vh - 60px);
+  /* height: 100%; */
   font-family: var(--font-family);
   background-color: var(--bage-bg-color);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  height: 100%;
 }
 
 
@@ -811,4 +817,91 @@ aside nav button span{
   margin: 0;
 }
 
+.bage-body .search-form{
+  width: calc(100% - (340px));
+  background-color: var(--dark-nave-bg-color);
+  position: fixed;
+  top:0px;
+  left: 200px;
+  z-index: 100;
+}
 
+.bage-body .search-form div{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  position: relative;
+}
+
+.bage-body .search-form div input{
+  margin: 0px;
+  padding: 12px 15px;
+  border-radius: 20px;
+  background-color: var(--boxes-bg-color);
+}
+
+.bage-body .search-form div button{
+  position: absolute;
+  right: 5px;
+  background-color: var(--text-light);
+  color: var(--text-dark);
+  border: none;
+  width: 35px;
+  height: 30px;
+  border-radius: 45%;
+  font-size: 18px;
+}
+
+nav .search-form{
+  width: 100%;
+  display: flex;
+  position: relative;
+  padding: 10px 20px;
+  flex-direction: row;
+  justify-content: center;
+  background-color: var(--dark-nave-bg-color);
+}
+
+
+nav .search-form input{
+  border: none;
+  outline: none;
+  margin: 0px;
+  padding: 12px 15px;
+  width: 100%;
+  border-radius: 20px;
+  background-color: var(--boxes-bg-color);
+  font-size: 16px;
+}
+
+nav .search-form button{
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  background-color: var(--text-light);
+  color: var(--text-dark);
+  border: none;
+  width: 35px;
+  height: 30px;
+  border-radius: 45%;
+  font-size: 18px;
+}
+
+nav .search-form button:hover{
+  background-color: var(--text-dark);
+  color: var(--text-light);
+  cursor: pointer;
+}
+
+.bage-body .users{
+  min-height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* .bage-body{
+  display: flex;
+  flex-direction: column;
+  background-color: #06082e;
+  padding: 20px;
+} */

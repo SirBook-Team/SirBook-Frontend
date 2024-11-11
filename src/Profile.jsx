@@ -255,12 +255,13 @@ const Profile = () => {
 
   return (
     <>
-        <section className={isSidebarActive ? 'bage-body active' : 'bage-body'}>
+        <section className={isSidebarActive ? ((isLoggedIn) ? `bage-body active` : `bage active`) : ((isLoggedIn) ? `bage-body` : `bage`)}>
             <form className='profile-form'>
                 <div className='flex-container left'>
                     <div className='profile-container'>
                         <div className="main-box">
-                            <img className='image' alt={ userRef ? `${userRef.firstname} ${userRef.lastname}'s profile` : 'profile'} src={ userRef && userRef.profile ? userRef.profile : profileImg}/>
+                            <img className='image' alt={ userRef ? `${userRef.firstname} ${userRef.lastname}'s profile` : 'profile'} src={ userRef && userRef.profile ? userRef.profile : profileImg }/>
+                            {console.log(userRef.profile)}
                         </div>
                     </div>
                     <h2>{userRef ? `${userRef.firstname} ${userRef.lastname}` : 'user\'s name'}</h2>
