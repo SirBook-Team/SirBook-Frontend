@@ -897,11 +897,46 @@ nav .search-form button:hover{
   min-height: calc(100vh - 60px);
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  width: 70%;
 }
 
-/* .bage-body{
-  display: flex;
-  flex-direction: column;
-  background-color: #06082e;
+.bage-body .users .post-box{
+  width: 100%;
+  margin: 20px;
   padding: 20px;
-} */
+  background-color: var(--text-light); 
+  border-radius: 10px;
+  background-color: var(--light-nave-bg-color);
+}
+
+.bage-body .users .post-box .user-box{
+  width: 100%;
+  color: var(--text-dark);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  border: none;
+  outline: none;
+  background-color: inherit;
+  font-size: 16px;
+  background-color: var(--light-nave-bg-color);
+}
+
+.bage-body .users .post-box .user-box:hover{
+  cursor: pointer;
+}
+
+.bage-body .posts-box .post-box p{
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.bage-body .users .post-box .user-box .users-img{
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border-color);
+}
