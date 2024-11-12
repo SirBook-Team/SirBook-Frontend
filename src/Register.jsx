@@ -77,11 +77,12 @@ const Register = () => {
                 navigate('/');
             }
             else{
+                alert(await response.text());
                 console.error(await response.text());
             }
         }
         catch(error){
-            console.error('Error: ', error);
+            alert('Server Error');
             console.error('Server Error');
         }
     };

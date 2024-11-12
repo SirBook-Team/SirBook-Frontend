@@ -264,7 +264,6 @@ const Profile = () => {
                     <div className='profile-container'>
                         <div className="main-box">
                             <img className='image' alt={ userRef ? `${userRef.firstname} ${userRef.lastname}'s profile` : 'profile'} src={ userRef && userRef.profile ? userRef.profile : profileImg }/>
-                            {console.log(userRef.profile)}
                         </div>
                     </div>
                     <h2>{userRef ? `${userRef.firstname} ${userRef.lastname}` : 'user\'s name'}</h2>

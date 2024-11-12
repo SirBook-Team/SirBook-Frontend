@@ -73,7 +73,8 @@ const Login = () => {
             setIsSidebarActive(false);
             navigate('/profile');
         } else {
-            console.error('Invalid credentials');
+            alert(await response.text());
+            console.error(await response.text());
         }
     };
 

@@ -86,12 +86,13 @@ const UpdateProfile = () => {
             navigate('/profile');
         }
         else{
+            alert(await response.text());
             console.error(await response.text());
         }
     }
     catch(error){
-        console.error('Error: ', error);
-        console.error('Server Error');
+        alert('server error');
+        console.error('server error');
     }
   };
 
