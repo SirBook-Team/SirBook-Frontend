@@ -55,7 +55,7 @@ const Register = () => {
                 }
             }
             else{
-                navigate('/');
+                navigate('/register');
             }
         };
         checkToken();
