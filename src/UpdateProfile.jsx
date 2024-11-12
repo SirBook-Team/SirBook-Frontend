@@ -91,7 +91,6 @@ const UpdateProfile = () => {
         }
     }
     catch(error){
-        alert('server error');
         console.error('server error');
     }
   };

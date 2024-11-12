@@ -59,22 +59,28 @@ const Login = () => {
     // handel athontication
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch(loginApi, {
-        method: 'POST',
-        headers:{
-            "Content-Type":"application/json",
-        },
-        body: JSON.stringify({ email, password }),
-        });
-        if (response.ok) {
-            const data = await response.json();
-            localStorage.setItem('token', data.token); 
-            setIsLoggedIn(true);
-            setIsSidebarActive(false);
-            navigate('/profile');
-        } else {
-            alert(await response.text());
-            console.error(await response.text());
+        try {
+            const response = await fetch(loginApi, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, password }),
+            });
+    
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem('token', data.token);
+                setIsLoggedIn(true);
+                setIsSidebarActive(false);
+                navigate('/profile');
+            } else {
+                const errorText = await response.text();
+                alert(errorText);
+                console.error(errorText);
+            }
+        } catch (error) {
+            console.error("Error occurred during login:", error);
         }
     };
 

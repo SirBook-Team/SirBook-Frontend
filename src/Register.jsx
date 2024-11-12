@@ -82,7 +82,6 @@ const Register = () => {
             }
         }
         catch(error){
-            alert('Server Error');
             console.error('Server Error');
         }
     };
