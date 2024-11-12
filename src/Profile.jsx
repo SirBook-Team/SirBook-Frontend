@@ -4,6 +4,8 @@ import profileImg from './images/profile.png';
 
 import { LoginContext } from './LoginContext';
 import { SidebarContext } from './SidebarContext';
+ 
+
 const Profile = () => {
 
     // handel variables
@@ -22,6 +24,7 @@ const Profile = () => {
     const [reacts, setReacts] = useState({});
     const [reactsCount, setReactsCount] = useState({});
     const [isReacting, setIsReacting] = useState({});
+     
 
     // handel get user posts
     const getPosts = async (userEmail) => {

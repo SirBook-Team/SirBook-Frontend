@@ -2,6 +2,8 @@ import React from 'react';
 import {Link, useNavigate } from 'react-router-dom';
 import { useState, useContext, useEffect } from 'react';
 
+
+
 import { LoginContext } from './LoginContext';
 import { SidebarContext } from './SidebarContext';
 
@@ -15,7 +17,44 @@ const Login = () => {
     const [isLoggedIn, setIsLoggedIn]= useContext(LoginContext);
     const [isSidebarActive, setIsSidebarActive] = useContext(SidebarContext);
     const navigate = useNavigate();
+    const [user, setUser] = useState(null);
+    const [userRef, setUserRef] = useState([]);
+    
 
+    // handel athontication
+    useEffect(() => {
+        const checkToken = async () => {
+            if (isLoggedIn) {
+                const token = localStorage.getItem('token');
+                const checkTokenApi = `${apiUrl}/api/auth`;
+                try {
+                    const response = await fetch(checkTokenApi, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`, 
+                        },
+                    });
+                    if (response.ok) {
+                        navigate('/profile');
+                    } else {
+                        setIsLoggedIn(false);
+                        localStorage.removeItem('token');
+                        navigate('/');
+                    }
+                } catch (error) {
+                    console.error('Error verifying token:', error);
+                    setIsLoggedIn(false);
+                    localStorage.removeItem('token');
+                    navigate('/');
+                }
+            }
+            else{
+                navigate('/');
+            }
+        };
+        checkToken();
+    }, [isLoggedIn, navigate, setIsLoggedIn]);
 
     // handel athontication
     const handleSubmit = async (e) => {

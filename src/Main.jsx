@@ -4,8 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import profileImg from './images/profile.png';
 
 
+
 import { LoginContext } from './LoginContext';
 import { SidebarContext } from './SidebarContext';
+ 
+
 
 
 
@@ -26,6 +29,8 @@ const Main = () => {
     const [reacts, setReacts] = useState({});
     const [reactsCount, setReactsCount] = useState({});
     const [isReacting, setIsReacting] = useState({});
+     
+
 
     // handel athontication
     useEffect(() => {

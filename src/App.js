@@ -1,6 +1,4 @@
-// import logo from './sir_light3.svg';
 import React from 'react';
-// import {useState} from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Login from './Login';
@@ -43,7 +41,6 @@ function App() {
         </SidebarProvider>
       </LoginProvider>
     </>
-    
   );
 }
 
